@@ -93,10 +93,14 @@
             width: 100%;
             display: block;
             text-transform: uppercase;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
         }
         /* Add custom scrollbar for sidebar */
         .sidebar::-webkit-scrollbar {
-            width: 5px;
+            width: 2px;
         }
         .sidebar::-webkit-scrollbar-track {
             background: #111111;
@@ -126,17 +130,13 @@
         </div>
 
         <nav class="py-4 overflow-y-auto" style="max-height: calc(100vh - 80px);">
-            <a href="{{ route('dashboard') }}" class="sidebar-link {{ request()->routeIs('dashboard') ? 'active' : '' }}">
+            <a href="{{ request()->routeIs('emergency.dashboard') && session('selected_ward_name') === 'Emergency Department' ? route('emergency.dashboard') : route('dashboard') }}"
+               class="sidebar-link {{ request()->routeIs('dashboard') || request()->routeIs('emergency.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span>
-            </a>
-            <a href="{{ route('ward.entry.create') }}" class="sidebar-link {{ request()->routeIs('ward.entry.create') ? 'active' : '' }}">
-                <i class="fas fa-clipboard-list"></i> <span class="sidebar-text">Ward Entry</span>
-            </a>
-            <a href="{{ route('census.create') }}" class="sidebar-link {{ request()->routeIs('census.create') ? 'active' : '' }}">
-                <i class="fas fa-chart-line"></i> <span class="sidebar-text">24 Hours Census</span>
             </a>
 
             @php
+                $isEmergencyDepartment = session('selected_ward_name') === 'Emergency Department';
                 $hasMaternityAccess = Auth::user()->wards()->where('name', 'like', '%MATERNITY%')
                     ->orWhere('name', 'like', '%LABOUR%')
                     ->orWhere('name', 'like', '%DELIVERY%')
@@ -144,24 +144,42 @@
                     ->exists();
             @endphp
 
+            @if(!$isEmergencyDepartment)
+            <a href="{{ route('ward.entry.create') }}" class="sidebar-link {{ request()->routeIs('ward.entry.create') ? 'active' : '' }}">
+                <i class="fas fa-clipboard-list"></i> <span class="sidebar-text">Ward Entry</span>
+            </a>
+            <a href="{{ route('census.create') }}" class="sidebar-link {{ request()->routeIs('census.create') ? 'active' : '' }}">
+                <i class="fas fa-chart-line"></i> <span class="sidebar-text">24 Hours Census</span>
+            </a>
+            @endif
+
             @if($hasMaternityAccess)
             <a href="{{ route('delivery.index') }}" class="sidebar-link {{ request()->routeIs('delivery.*') ? 'active' : '' }}">
                 <i class="fas fa-baby-carriage"></i> <span class="sidebar-text">Delivery</span>
             </a>
             @endif
 
+            @if($isEmergencyDepartment)
+            <a href="{{ route('infectious-diseases.index') }}" class="sidebar-link {{ request()->routeIs('infectious-diseases.*') ? 'active' : '' }}">
+                <i class="fas fa-head-side-mask"></i> <span class="sidebar-text">Infectious Disease</span>
+            </a>
+            <a href="#" class="sidebar-link {{ request()->routeIs('emergency.bor') ? 'active' : '' }}">
+                <i class="fas fa-hospital-user"></i> <span class="sidebar-text">Emergency Room BOR</span>
+            </a>
+            @else
             <a href="#" class="sidebar-link">
                 <i class="fas fa-head-side-mask"></i> <span class="sidebar-text">Infectious Disease</span>
             </a>
             <a href="#" class="sidebar-link">
                 <i class="fas fa-hospital-user"></i> <span class="sidebar-text">Emergency Room BOR</span>
             </a>
+            @endif
             <a href="#" class="sidebar-link">
                 <i class="fas fa-bed"></i> <span class="sidebar-text">Bed Availability Status</span>
             </a>
             <a href="#" class="sidebar-link">
                 <i class="fas fa-chart-line"></i> <span class="sidebar-text">Daily Data</span>
-                        </a>
+            </a>
             <a href="#" class="sidebar-link">
                 <i class="fas fa-user-md"></i> <span class="sidebar-text">Daily Profit Center Census</span>
             </a>
@@ -187,14 +205,14 @@
     <!-- Content -->
     <div id="content" class="content-wrapper {{ $isSelectWardPage ? 'full-width' : '' }}">
         <!-- Header -->
-        <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center">
+        <header class="bg-white shadow-sm px-6 py-4 flex justify-between items-center relative">
+            <div class="flex items-center z-10">
                 @if(session('selected_ward_name') && !$isSelectWardPage)
                 @endif
             </div>
 
-            <div class="w-full text-center">
-                <h2 class="page-title">
+            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <h2 class="page-title pointer-events-auto">
                     @if(session('selected_ward_name') && !$isSelectWardPage)
                     {{ session('selected_ward_name') }}
                     @else
@@ -204,7 +222,7 @@
             </div>
 
             @auth
-            <div class="flex items-center">
+            <div class="flex items-center z-10">
                 <a href="{{ route('logout') }}" class="text-gray-600 hover:text-gray-900 flex items-center">
                     <span class="sidebar-text">Welcome, {{ Auth::user()->username }}</span>
                     {{-- <span class="text-sm">Logout</span> --}}

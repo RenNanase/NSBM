@@ -6,6 +6,8 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WardController;
 use App\Http\Controllers\CensusController;
 use App\Http\Controllers\DeliveryController;
+use App\Http\Controllers\EmergencyDashboardController;
+use App\Http\Controllers\InfectiousDiseaseController;
 
 // Public routes
 Route::get('/', function () {
@@ -22,18 +24,40 @@ Route::middleware('auth')->group(function () {
     Route::get('/ward/select', [AuthController::class, 'showWardSelection'])->name('ward.select');
     Route::post('/ward/select', [AuthController::class, 'selectWard'])->name('ward.select.post');
 
-    // Ward access required routes
-    Route::middleware('ward.access')->group(function () {
-        // Dashboard
+    // Apply Emergency Department middleware to check and redirect to the proper dashboard
+    Route::middleware('emergency.department')->group(function () {
+        // Regular dashboard
         Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    });
 
-        // Ward entries
-        Route::get('/ward/entry/create', [WardController::class, 'createEntry'])->name('ward.entry.create');
-        Route::post('/ward/entry/store', [WardController::class, 'storeEntry'])->name('ward.entry.store');
+    // Emergency Department Dashboard
+    Route::get('/emergency/dashboard', [EmergencyDashboardController::class, 'index'])->name('emergency.dashboard');
 
-        // Census entries
-        Route::get('/census/create', [CensusController::class, 'create'])->name('census.create');
-        Route::post('/census/store', [CensusController::class, 'store'])->name('census.store');
+    // Infectious Disease routes - Only for Emergency Department staff
+    Route::middleware('ward.access')->group(function () {
+        // Infectious Disease routes
+        Route::get('/infectious-diseases', [InfectiousDiseaseController::class, 'index'])->name('infectious-diseases.index');
+        Route::get('/infectious-diseases/create', [InfectiousDiseaseController::class, 'create'])->name('infectious-diseases.create');
+        Route::post('/infectious-diseases', [InfectiousDiseaseController::class, 'store'])->name('infectious-diseases.store');
+        Route::get('/infectious-diseases/{infectiousDisease}', [InfectiousDiseaseController::class, 'show'])->name('infectious-diseases.show');
+        Route::get('/infectious-diseases/{infectiousDisease}/edit', [InfectiousDiseaseController::class, 'edit'])->name('infectious-diseases.edit');
+        Route::put('/infectious-diseases/{infectiousDisease}', [InfectiousDiseaseController::class, 'update'])->name('infectious-diseases.update');
+        Route::delete('/infectious-diseases/{infectiousDisease}', [InfectiousDiseaseController::class, 'destroy'])->name('infectious-diseases.destroy');
+        Route::get('/infectious-diseases-report', [InfectiousDiseaseController::class, 'report'])->name('infectious-diseases.report');
+    });
+
+    // Non-Emergency Department routes (Ward Entry and Census)
+    Route::middleware('ward.access')->group(function () {
+        // Ward entries and Census - Only for non-emergency departments
+        Route::middleware('non.emergency')->group(function() {
+            // Ward entries
+            Route::get('/ward/entry/create', [WardController::class, 'createEntry'])->name('ward.entry.create');
+            Route::post('/ward/entry/store', [WardController::class, 'storeEntry'])->name('ward.entry.store');
+
+            // Census entries
+            Route::get('/census/create', [CensusController::class, 'create'])->name('census.create');
+            Route::post('/census/store', [CensusController::class, 'store'])->name('census.store');
+        });
 
         // Delivery entries - Only accessible to maternity ward staff
         Route::middleware('maternity.access')->group(function () {

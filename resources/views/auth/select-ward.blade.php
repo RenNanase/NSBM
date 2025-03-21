@@ -32,9 +32,9 @@
                 </div>
 
                 <div class="mb-6">
-                    <label for="ward_id" class="block text-gray-700 font-medium mb-2">Available Wards</label>
-                    <select name="ward_id" id="ward_id" class="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors" required>
-                        <option value="">-- Select Ward --</option>
+                    <label for="ward_id" class="block text-gray-700 font-medium mb-2">Wards & Department</label>
+                    <select name="ward_id" id="ward_id" class="w-full text-sm text-center px-4 py-3 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors" required>
+                        <option value="">-- Select Ward/Department --</option>
                         @foreach($wards as $ward)
                             @php
                                 $hasAccess = in_array($ward->id, $userWards);

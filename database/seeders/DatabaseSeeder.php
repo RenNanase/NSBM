@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             WardSeeder::class,
             ShiftSeeder::class,
             UserWardSeeder::class,
+            InfectiousDiseaseSeeder::class,
         ]);
     }
 }
