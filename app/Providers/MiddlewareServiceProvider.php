@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
-use App\Http\Middleware\AdminMiddleware;
-use App\Http\Middleware\CheckWardAccess;
 use Illuminate\Support\ServiceProvider;
+use App\Http\Middleware\MaternityWardAccessMiddleware;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Middleware\WardAccessMiddleware;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Routing\Router;
 use Illuminate\Http\Response;
@@ -16,7 +17,9 @@ class MiddlewareServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->singleton(MaternityWardAccessMiddleware::class);
+        $this->app->singleton(AdminMiddleware::class);
+        $this->app->singleton(WardAccessMiddleware::class);
     }
 
     /**
@@ -24,8 +27,9 @@ class MiddlewareServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $router = $this->app->make(Router::class);
-        $router->aliasMiddleware('ward.access', CheckWardAccess::class);
+        $router = $this->app['router'];
+        $router->aliasMiddleware('maternity.access', MaternityWardAccessMiddleware::class);
         $router->aliasMiddleware('admin', AdminMiddleware::class);
+        $router->aliasMiddleware('ward.access', WardAccessMiddleware::class);
     }
 }

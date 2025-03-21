@@ -16,9 +16,12 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (!Auth::check() || !Auth::user()->isAdmin()) {
-            return redirect()->route('dashboard')
-                ->with('error', 'You do not have permission to access this page.');
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        if (Auth::user()->username !== 'admin') {
+            return redirect()->route('admin.access.denied');
         }
 
         return $next($request);

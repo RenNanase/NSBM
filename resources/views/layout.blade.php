@@ -135,9 +135,21 @@
             <a href="{{ route('census.create') }}" class="sidebar-link {{ request()->routeIs('census.create') ? 'active' : '' }}">
                 <i class="fas fa-chart-line"></i> <span class="sidebar-text">24 Hours Census</span>
             </a>
-            <a href="#" class="sidebar-link">
+
+            @php
+                $hasMaternityAccess = Auth::user()->wards()->where('name', 'like', '%MATERNITY%')
+                    ->orWhere('name', 'like', '%LABOUR%')
+                    ->orWhere('name', 'like', '%DELIVERY%')
+                    ->orWhere('name', 'like', '%OB-GYN%')
+                    ->exists();
+            @endphp
+
+            @if($hasMaternityAccess)
+            <a href="{{ route('delivery.index') }}" class="sidebar-link {{ request()->routeIs('delivery.*') ? 'active' : '' }}">
                 <i class="fas fa-baby-carriage"></i> <span class="sidebar-text">Delivery</span>
-                        </a>
+            </a>
+            @endif
+
             <a href="#" class="sidebar-link">
                 <i class="fas fa-head-side-mask"></i> <span class="sidebar-text">Infectious Disease</span>
             </a>
@@ -161,6 +173,9 @@
             </a>
             <a href="#" class="sidebar-link">
                 <i class="fas fa-chart-bar"></i> <span class="sidebar-text">Reports</span>
+            </a>
+            <a href="{{ route('support.access-control') }}" class="sidebar-link {{ request()->routeIs('support.access-control') ? 'active' : '' }}">
+                <i class="fas fa-shield-alt"></i> <span class="sidebar-text">Access Guide</span>
             </a>
             <a href="#" class="sidebar-link">
                 <i class="fas fa-cog"></i> <span class="sidebar-text">Settings</span>

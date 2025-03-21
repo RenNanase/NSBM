@@ -32,8 +32,9 @@ class User extends Authenticatable
 
     /**
      * Check if the user is an administrator.
+     * This is a shorthand method that checks if the username is 'admin'.
      *
-     * @return bool
+     * @return bool True if the user has admin privileges, false otherwise
      */
     public function isAdmin(): bool
     {
@@ -42,6 +43,8 @@ class User extends Authenticatable
 
     /**
      * Get the wards associated with the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function wards(): BelongsToMany
     {
@@ -50,6 +53,8 @@ class User extends Authenticatable
 
     /**
      * Get the ward entries created by the user.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function wardEntries(): HasMany
     {
