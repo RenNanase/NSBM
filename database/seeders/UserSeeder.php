@@ -30,33 +30,33 @@ class UserSeeder extends Seeder
         // ]);
 
         User::create([
-            'username' => 'ICU',
-            'password' => Hash::make('ICU123abc'),
+            'username' => 'icunurse',
+            'password' => Hash::make('icu123'),
         ]);
 
         User::create([
-            'username' => 'Maternity',
-            'password' => Hash::make('Maternity123abc'),
+            'username' => 'maternitynurse',
+            'password' => Hash::make('maternity123'),
         ]);
 
         User::create([
-            'username' => 'Medical',
-            'password' => Hash::make('Medical123abc'),
+            'username' => 'medicalnurse',
+            'password' => Hash::make('medical123'),
         ]);
 
         User::create([
-            'username' => 'Surgical',
-            'password' => Hash::make('Surgical123abc'),
+            'username' => 'surgicalnurse',
+            'password' => Hash::make('surgical123'),
         ]);
 
         User::create([
-            'username' => 'Newwing',
-            'password' => Hash::make('Newwing123abc'),
+            'username' => 'newwingnurse',
+            'password' => Hash::make('newwing123'),
         ]);
 
         User::create([
-            'username' => 'Nursery',
-            'password' => Hash::make('Nursery123abc'),
+            'username' => 'nurserynurse',
+            'password' => Hash::make('nursery123'),
         ]);
     }
 }

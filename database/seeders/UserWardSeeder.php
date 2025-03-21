@@ -36,46 +36,46 @@ class UserWardSeeder extends Seeder
         //     $Rize->wards()->attach([$newWing->id]);
         // }
 
-        $ICU = User::where('username', 'ICU')->first();
-        $wards = Ward::all();
+        $icunurse = User::where('username', 'icunurse')->first();
+        $icuWard = Ward::where('name', 'ICU')->first();
 
-        if ($ICU) {
-            $ICU->wards()->attach($wards->pluck('id'));
+        if ($icunurse) {
+            $icunurse->wards()->attach([$icuWard->id]);
         }
 
-        $Maternity = User::where('username', 'Maternity')->first();
-        $wards = Ward::all();
+        $maternitynurse = User::where('username', 'maternitynurse')->first();
+        $maternityWard = Ward::where('name', 'Maternity')->first();
 
-        if ($Maternity) {
-            $Maternity->wards()->attach($wards->pluck('id'));
+        if ($maternitynurse) {
+            $maternitynurse->wards()->attach([$maternityWard->id]);
         }
 
-        $Medical = User::where('username', 'Medical')->first();
-        $wards = Ward::all();
+        $medicalnurse = User::where('username', 'medicalnurse')->first();
+        $medicalWard = Ward::where('name', 'Medical Ward')->first();
 
-        if ($Medical) {
-            $Medical->wards()->attach($wards->pluck('id'));
+        if ($medicalnurse) {
+            $medicalnurse->wards()->attach([$medicalWard->id]);
         }
 
-        $Surgical = User::where('username', 'Surgical')->first();
-        $wards = Ward::all();
+        $surgicalnurse = User::where('username', 'surgicalnurse')->first();
+        $surgicalWard = Ward::where('name', 'Surgical Ward')->first();
 
-        if ($Surgical) {
-            $Surgical->wards()->attach($wards->pluck('id'));
+        if ($surgicalnurse) {
+            $surgicalnurse->wards()->attach([$surgicalWard->id]);
         }
 
-        $Newwing = User::where('username', 'Newwing')->first();
-        $wards = Ward::all();
+        $newwingnurse = User::where('username', 'newwingnurse')->first();
+        $newwingWard = Ward::where('name', 'New Wing')->first();
 
-        if ($Newwing) {
-            $Newwing->wards()->attach($wards->pluck('id'));
+        if ($newwingnurse) {
+            $newwingnurse->wards()->attach([$newwingWard->id]);
         }
 
-        $Nursery = User::where('username', 'Nursery')->first();
-        $wards = Ward::all();
+        $nurserynurse = User::where('username', 'nurserynurse')->first();
+        $nurseryWard = Ward::where('name', 'Nursery')->first();
 
-        if ($Nursery) {
-            $Nursery->wards()->attach($wards->pluck('id'));
+        if ($nurserynurse) {
+            $nurserynurse->wards()->attach([$nurseryWard->id]);
         }
     }
 }
