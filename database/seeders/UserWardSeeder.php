@@ -44,7 +44,7 @@ class UserWardSeeder extends Seeder
         }
 
         $maternitynurse = User::where('username', 'maternitynurse')->first();
-        $maternityWard = Ward::where('name', 'Maternity')->first();
+        $maternityWard = Ward::where('name', 'Maternity Suite (L&D)')->first();
 
         if ($maternitynurse) {
             $maternitynurse->wards()->attach([$maternityWard->id]);
