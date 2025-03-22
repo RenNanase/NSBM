@@ -8,6 +8,7 @@ use App\Http\Controllers\CensusController;
 use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\EmergencyDashboardController;
 use App\Http\Controllers\InfectiousDiseaseController;
+use App\Http\Controllers\EmergencyRoomBORController;
 
 // Public routes
 Route::get('/', function () {
@@ -44,6 +45,17 @@ Route::middleware('auth')->group(function () {
         Route::put('/infectious-diseases/{infectiousDisease}', [InfectiousDiseaseController::class, 'update'])->name('infectious-diseases.update');
         Route::delete('/infectious-diseases/{infectiousDisease}', [InfectiousDiseaseController::class, 'destroy'])->name('infectious-diseases.destroy');
         Route::get('/infectious-diseases-report', [InfectiousDiseaseController::class, 'report'])->name('infectious-diseases.report');
+
+        // Emergency Room BOR routes - Only for Emergency Department staff
+        Route::get('/emergency/bor', [EmergencyRoomBORController::class, 'index'])->name('emergency.bor.index');
+        Route::get('/emergency/bor/create', [EmergencyRoomBORController::class, 'create'])->name('emergency.bor.create');
+        Route::post('/emergency/bor', [EmergencyRoomBORController::class, 'store'])->name('emergency.bor.store');
+        Route::get('/emergency/bor/{id}', [EmergencyRoomBORController::class, 'show'])->name('emergency.bor.show');
+        Route::get('/emergency/bor/{id}/edit', [EmergencyRoomBORController::class, 'edit'])->name('emergency.bor.edit');
+        Route::put('/emergency/bor/{id}', [EmergencyRoomBORController::class, 'update'])->name('emergency.bor.update');
+        Route::delete('/emergency/bor/{id}', [EmergencyRoomBORController::class, 'destroy'])->name('emergency.bor.destroy');
+        Route::get('/emergency/bor/history', [EmergencyRoomBORController::class, 'history'])->name('emergency.bor.history');
+        Route::get('/emergency/bor/report', [EmergencyRoomBORController::class, 'report'])->name('emergency.bor.report');
     });
 
     // Non-Emergency Department routes (Ward Entry and Census)

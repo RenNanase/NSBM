@@ -26,10 +26,7 @@
                 <thead>
                     <tr class="bg-black text-white text-sm uppercase">
                         <th class="py-3 px-4 text-center">Date</th>
-                        <th class="py-3 px-4 text-center">SVD</th>
-                        <th class="py-3 px-4 text-center">LSCS</th>
-                        <th class="py-3 px-4 text-center">Vacuum</th>
-                        <th class="py-3 px-4 text-center">Forceps</th>
+                        <th class="py-3 px-4 text-center">Updated By</th>
                         <th class="py-3 px-4 text-center">Total</th>
                         <th class="py-3 px-4 text-center">Actions</th>
                     </tr>
@@ -38,10 +35,7 @@
                     @foreach($deliveries as $delivery)
                     <tr class="hover:bg-pink-50">
                         <td class="py-3 px-4 text-center">{{ $delivery->report_date->format('M d, Y') }}</td>
-                        <td class="py-3 px-4 text-center">{{ $delivery->svd }}</td>
-                        <td class="py-3 px-4 text-center">{{ $delivery->lscs }}</td>
-                        <td class="py-3 px-4 text-center">{{ $delivery->vacuum }}</td>
-                        <td class="py-3 px-4 text-center">{{ $delivery->forceps }}</td>
+                        <td class="py-3 px-4 text-center">{{ $delivery->user->username }}</td>
                         <td class="py-3 px-4 text-center font-bold">{{ $delivery->total }}</td>
                         <td class="py-3 px-4 text-center">
                             <div class="flex items-center justify-center space-x-2">

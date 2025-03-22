@@ -163,7 +163,7 @@
             <a href="{{ route('infectious-diseases.index') }}" class="sidebar-link {{ request()->routeIs('infectious-diseases.*') ? 'active' : '' }}">
                 <i class="fas fa-head-side-mask"></i> <span class="sidebar-text">Infectious Disease</span>
             </a>
-            <a href="#" class="sidebar-link {{ request()->routeIs('emergency.bor') ? 'active' : '' }}">
+            <a href="{{ route('emergency.bor.index') }}" class="sidebar-link {{ request()->routeIs('emergency.bor') ? 'active' : '' }}">
                 <i class="fas fa-hospital-user"></i> <span class="sidebar-text">Emergency Room BOR</span>
             </a>
             @else
@@ -188,9 +188,6 @@
             </a>
             <a href="#" class="sidebar-link">
                 <i class="fas fa-user-clock"></i> <span class="sidebar-text">Staff On EL/UPL</span>
-            </a>
-            <a href="#" class="sidebar-link">
-                <i class="fas fa-chart-bar"></i> <span class="sidebar-text">Reports</span>
             </a>
             <a href="{{ route('support.access-control') }}" class="sidebar-link {{ request()->routeIs('support.access-control') ? 'active' : '' }}">
                 <i class="fas fa-shield-alt"></i> <span class="sidebar-text">Access Guide</span>
@@ -224,9 +221,9 @@
             @auth
             <div class="flex items-center z-10">
                 <a href="{{ route('logout') }}" class="text-gray-600 hover:text-gray-900 flex items-center">
-                    <span class="sidebar-text">Welcome, {{ Auth::user()->username }}</span>
+                    <span class="sidebar-text">Welcome, {{ Auth::user()->username   }}  </span>
                     {{-- <span class="text-sm">Logout</span> --}}
-                    <i class="fas fa-sign-out-alt ml-1"></i>
+                    <i class=  "fas fa-sign-out-alt ml-1"></i>
                 </a>
             </div>
             @endauth
