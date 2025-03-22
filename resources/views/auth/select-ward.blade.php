@@ -19,7 +19,7 @@
             <form action="{{ route('ward.select.post') }}" method="POST" id="wardSelectionForm">
                 @csrf
 
-                <div class="mb-4">
+                {{-- <div class="mb-4">
                     <p class="text-sm text-gray-500 mb-2">Legend:</p>
                     <div class="flex items-center mb-1">
                         <span class="w-3 h-3 rounded-full bg-green-500 mr-2"></span>
@@ -29,7 +29,7 @@
                         <span class="w-3 h-3 rounded-full bg-gray-300 mr-2"></span>
                         <span class="text-sm">Wards you don't have access to</span>
                     </div>
-                </div>
+                </div> --}}
 
                 <div class="mb-6">
                     <label for="ward_id" class="block text-gray-700 font-medium mb-2">Wards & Department</label>
@@ -38,8 +38,8 @@
                         @foreach($wards as $ward)
                             @php
                                 $hasAccess = in_array($ward->id, $userWards);
-                                $optionClass = $hasAccess ? 'text-green-700 font-medium' : 'text-gray-500';
-                                $accessIndicator = $hasAccess ? '✓ ' : '';
+                                $optionClass = $hasAccess ? 'text-pink-700 font-medium' : 'text-gray-500';
+                                $accessIndicator = $hasAccess ? '⭐ ' : ''; // Star
                                 $wardData = json_encode(['id' => $ward->id, 'hasAccess' => $hasAccess]);
                             @endphp
                             <option value="{{ $ward->id }}" class="{{ $optionClass }}" data-ward="{{ $wardData }}">
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (!wardData.hasAccess) {
                     e.preventDefault();
-                    alert('You do not have access to this ward. Please contact the administrator if you need access.');
+                    alert('You do not have access to this ward. Please contact the IT Department.');
                 }
             }
         });
