@@ -12,6 +12,7 @@
         </div>
     </div>
 
+    {{-- recent entry --}}
     <div class="overflow-x-auto">
         <table class="min-w-full border rounded-lg overflow-hidden dashboard-table"
             style="border-color: var(--color-border);">
@@ -185,35 +186,51 @@
         </div>
     </div>
 
+    {{-- census summary --}}
     <div class="dashboard-card p-6">
         <div class="flex justify-between items-center mb-5 pb-2 border-b" style="border-color: var(--color-border);">
             <h3 class="text-lg font-bold" style="color: var(--color-secondary);">Census Summary</h3>
             <a href="{{ route('census.create') }}" class="btn btn-primary text-xs">
-                <i class="fas fa-{{ isset($censusEntry) && $censusEntry ? 'edit' : 'plus-circle' }} mr-1.5"></i>
-                {{ isset($censusEntry) && $censusEntry ? 'Update Census' : 'Add Census' }}
+                @if(isset($censusEntry) && $censusEntry)
+                    @if($censusEntry->created_at->format('Y-m-d') === $today)
+                        <i class="fas fa-edit mr-1.5"></i> Update Today's Census
+                    @else
+                        <i class="fas fa-plus-circle mr-1.5"></i> Add Today's Census
+                    @endif
+                @else
+                    <i class="fas fa-plus-circle mr-1.5"></i> Add Census
+                @endif
             </a>
         </div>
         @if(isset($censusEntry) && $censusEntry)
         <div class="space-y-4">
             <div class="flex justify-between items-center">
                 <span style="color: var(--color-text-secondary);">24H Census</span>
-                <span class="font-semibold" style="color: var(--color-text-primary);">{{ $censusEntry->hours24_census
-                    }}</span>
+                <span class="font-semibold" style="color: var(--color-text-primary);">{{ $censusEntry->hours24_census }}</span>
             </div>
             <div class="flex justify-between items-center">
                 <span style="color: var(--color-text-secondary);">CF Patients at 24:00</span>
-                <span class="font-semibold" style="color: var(--color-text-primary);">{{ $censusEntry->cf_patient_2400
-                    }}</span>
+                <span class="font-semibold" style="color: var(--color-text-primary);">{{ $censusEntry->cf_patient_2400 }}</span>
             </div>
             <div class="flex justify-between items-center">
                 <span style="color: var(--color-text-secondary);">Bed Occupancy Rate</span>
                 <span class="badge badge-secondary">{{ number_format($censusEntry->bed_occupancy_rate, 2) }}%</span>
             </div>
             <div class="flex justify-between items-center">
-                <span style="color: var(--color-text-secondary);">Last Updated</span>
-                <span class="text-sm" style="color: var(--color-text-light);">{{ $censusEntry->updated_at->format('M d,
-                    Y H:i') }}</span>
+                <span style="color: var(--color-text-secondary);">Recorded Date</span>
+                <span class="text-sm" style="color: var(--color-text-light);">{{ $censusEntry->created_at->format('M d, Y') }}</span>
             </div>
+            <div class="flex justify-between items-center">
+                <span style="color: var(--color-text-secondary);">Last Updated</span>
+                <span class="text-sm" style="color: var(--color-text-light);">{{ $censusEntry->updated_at->format('M d, Y H:i') }}</span>
+            </div>
+            @if($censusEntry->created_at->format('Y-m-d') !== $today)
+            <div class="mt-3 p-2 rounded-md" style="background-color: var(--color-secondary-light); border: 1px solid var(--color-border);">
+                <p class="text-xs text-center" style="color: var(--color-secondary-dark);">
+                    <i class="fas fa-info-circle mr-1"></i> This is the most recent census data available. No data has been recorded for today.
+                </p>
+            </div>
+            @endif
             @if(Auth::user()->isAdmin())
             <div class="mt-6 pt-4 border-t flex justify-end" style="border-color: var(--color-border);">
                 <a href="{{ route('census.edit', $censusEntry->id) }}" class="btn btn-secondary text-xs">

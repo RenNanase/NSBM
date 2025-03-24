@@ -43,7 +43,7 @@ class DashboardController extends Controller
             ->get();
 
         // Get latest census data
-        $census = CensusEntry::where('ward_id', $ward->id)
+        $censusEntry = CensusEntry::where('ward_id', $ward->id)
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -85,7 +85,7 @@ class DashboardController extends Controller
             'ward',
             'shifts',
             'recentEntries',
-            'census',
+            'censusEntry',
             'filledShifts',
             'today',
             'morningShift',
