@@ -5,14 +5,14 @@
 
 @section('content')
 <div class="flex items-center justify-center min-h-[80vh]">
-    <div class="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 font-['Noto_Sans_JP'] uppercase mb-2">NSBM</h1>
+    <div class="max-w-md w-full login-card p-6">
+        <div class="text-center mb-6">
+            <h1 class="text-2xl font-bold" style="color: var(--color-secondary);">NSBM</h1>
             <p class="text-gray-600">Nursing Service Bed Management</p>
         </div>
 
         @if($wards->isEmpty())
-            <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded mb-4">
+            <div class="p-4 rounded-md mb-4" style="background-color: var(--color-primary-light); border: 1px solid var(--color-border); color: var(--color-accent);">
                 No wards available. Please contact the administrator.
             </div>
         @else
@@ -32,8 +32,8 @@
                 </div> --}}
 
                 <div class="mb-6">
-                    <label for="ward_id" class="block text-gray-700 font-medium mb-2">Wards & Department</label>
-                    <select name="ward_id" id="ward_id" class="w-full text-sm text-center px-4 py-3 bg-gray-50 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-pink-500 focus:border-pink-500 transition-colors" required>
+                    <label for="ward_id" class="block text-gray-700 font-medium mb-2 text-sm">Wards & Department</label>
+                    <select name="ward_id" id="ward_id" class="w-full text-sm px-4 py-3 rounded-md input-field focus:outline-none" required>
                         <option value="">-- Select Ward/Department --</option>
                         @foreach($wards as $ward)
                             @php
@@ -48,11 +48,11 @@
                         @endforeach
                     </select>
                     @error('ward_id')
-                        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
-                <button type="submit" class="w-full bg-pink-600 hover:bg-pink-700 text-white py-3 px-4 rounded-md font-medium transition duration-200 transform hover:translate-y-[-2px]">
+                <button type="submit" class="w-full btn-login text-white py-3 px-4 rounded-md transition duration-200 font-semibold">
                     Continue
                 </button>
             </form>
@@ -86,4 +86,33 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 </script>
+
+<style>
+    .login-card {
+        background-color: var(--color-primary-light, white);
+        border-radius: 0.75rem;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--color-border, #ffccd5);
+    }
+
+    .btn-login {
+        background-color: var(--color-secondary, #f78fa7);
+        transition: all 0.2s;
+    }
+
+    .btn-login:hover {
+        background-color: var(--color-secondary-dark, #c57285);
+    }
+
+    .input-field {
+        background-color: white;
+        border: 1px solid var(--color-border, #ffccd5);
+    }
+
+    .input-field:focus {
+        border-color: var(--color-secondary, #f78fa7);
+        outline: none;
+        box-shadow: 0 0 0 2px rgba(247, 143, 167, 0.2);
+    }
+</style>
 @endsection
