@@ -9,6 +9,7 @@ use App\Http\Controllers\DeliveryController;
 use App\Http\Controllers\EmergencyDashboardController;
 use App\Http\Controllers\InfectiousDiseaseController;
 use App\Http\Controllers\EmergencyRoomBORController;
+use App\Http\Controllers\DailyDataController;
 
 // Public routes
 Route::get('/', function () {
@@ -94,6 +95,19 @@ Route::middleware('auth')->group(function () {
             Route::get('/census/{entry}/edit', [CensusController::class, 'edit'])->name('census.edit');
             Route::put('/census/{entry}', [CensusController::class, 'update'])->name('census.update');
         });
+    });
+
+    // Daily Data - For all departments, moved outside ward.access middleware to allow direct access
+    Route::get('/daily-data', [DailyDataController::class, 'index'])->name('daily-data.index');
+    Route::get('/daily-data/create', [DailyDataController::class, 'create'])->name('daily-data.create');
+    Route::post('/daily-data', [DailyDataController::class, 'store'])->name('daily-data.store');
+    Route::get('/daily-data/{id}', [DailyDataController::class, 'show'])->name('daily-data.show');
+    Route::get('/daily-data/{id}/edit', [DailyDataController::class, 'edit'])->name('daily-data.edit');
+    Route::put('/daily-data/{id}', [DailyDataController::class, 'update'])->name('daily-data.update');
+
+    // Only admin can delete daily data entries
+    Route::middleware(['auth', 'admin'])->group(function () {
+        Route::delete('/daily-data/{id}', [DailyDataController::class, 'destroy'])->name('daily-data.destroy');
     });
 
     // Support & Documentation Routes

@@ -22,13 +22,24 @@ class WardAccessMiddleware
             return redirect()->route('login');
         }
 
+        $user = Auth::user();
+
+        // Admin users bypass ward access check
+        if ($user->isAdmin()) {
+            return $next($request);
+        }
+
         // Check if a ward is selected in the session
-        if (!session()->has('selected_ward_id')) {
+        if (!session()->has('selected_ward_id') && !session()->has('selected_ward')) {
             return redirect()->route('ward.select')->with('error', 'Please select a ward first.');
         }
 
+        // Get ward ID either from selected_ward_id or from selected_ward object
         $wardId = session('selected_ward_id');
-        $user = Auth::user();
+        if (!$wardId && session()->has('selected_ward')) {
+            $ward = session('selected_ward');
+            $wardId = $ward->id;
+        }
 
         // Check if the user has access to this ward using the user_ward pivot table
         $hasAccess = DB::table('user_ward')
@@ -36,8 +47,7 @@ class WardAccessMiddleware
             ->where('ward_id', $wardId)
             ->exists();
 
-        // Admin has access to all wards
-        if (!$hasAccess && $user->username !== 'admin') {
+        if (!$hasAccess) {
             return response()->view('errors.ward-access-denied');
         }
 

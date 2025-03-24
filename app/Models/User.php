@@ -31,14 +31,13 @@ class User extends Authenticatable
     ];
 
     /**
-     * Check if the user is an administrator.
-     * This is a shorthand method that checks if the username is 'admin'.
+     * Check if the user is an admin.
      *
-     * @return bool True if the user has admin privileges, false otherwise
+     * @return bool
      */
-    public function isAdmin(): bool
+    public function isAdmin()
     {
-        return $this->username === 'admin';
+        return $this->is_admin || $this->username === 'admin';
     }
 
     /**

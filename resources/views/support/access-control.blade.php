@@ -41,28 +41,30 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
                 <p class="text-sm text-gray-700">
-                    If you need access to additional wards, please contact your system administrator.
+                    If you need access to additional wards, please contact ICT Department.
                 </p>
             </div>
         </div>
 
-        <!-- Special Features -->
-        <div class="bg-blue-50 rounded-lg p-5 border border-blue-200">
-            <h3 class="text-lg font-medium text-blue-800 mb-3">Special Features Access</h3>
-            <p class="text-blue-700 mb-4">
-                Some features in the system are only available to users assigned to specific ward types:
-            </p>
-            <ul class="space-y-3 ml-5 list-disc text-blue-700">
-                <li>
-                    <span class="font-medium">Delivery Features:</span> Only accessible to users assigned to maternity-related wards
-                    (wards with names containing MATERNITY, LABOUR, DELIVERY, or OB-GYN).
-                </li>
-                <li>
-                    <span class="font-medium">Future Features:</span> Additional specialized features may be added that are restricted
-                    to specific ward types.
-                </li>
-            </ul>
-        </div>
+<!-- Special Features -->
+<div class="bg-pink-50 rounded-lg p-5 border border-pink-200">
+    <h3 class="text-lg font-medium text-pink-800 mb-3">Special Features Access</h3>
+    <p class="text-pink-700 mb-4">
+        Certain features in the system are exclusive to users assigned to specific ward types:
+    </p>
+    <ul class="space-y-3 ml-5 list-disc text-pink-700">
+        <li>
+            <span class="font-medium">Delivery Features:</span> Available only for users assigned to maternity-related
+            wards.
+        </li>
+        <li>
+            <span class="font-medium">Upcoming Features:</span> We are continuously improving! Planned additions include
+            an
+            <span class="font-semibold">Activity Log/Timeline</span> on the dashboard for better tracking of ward
+            activities.
+        </li>
+    </ul>
+</div>
 
         <!-- Admin Access -->
         <div class="bg-amber-50 rounded-lg p-5 border border-amber-200">
@@ -92,7 +94,7 @@
                 </svg>
                 <p class="text-sm text-gray-700">
                     If you believe you should have access to a feature but are receiving an access denied message,
-                    please contact your system administrator.
+                    please contact ICT Department.
                 </p>
             </div>
         </div>
@@ -101,13 +103,8 @@
         <div class="bg-gray-50 rounded-lg p-5 border border-gray-200">
             <h3 class="text-lg font-medium text-gray-800 mb-3">Need Help?</h3>
             <p class="text-gray-600 mb-4">
-                If you need assistance with access to specific features or wards, please contact your system administrator.
+                If you need assistance with access to specific features or wards, please contact ICT Department.
             </p>
-            <div class="flex justify-center">
-                <a href="{{ route('dashboard') }}" class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition">
-                    Return to Dashboard
-                </a>
-            </div>
         </div>
     </div>
 </div>

@@ -10,6 +10,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/daily-data.css') }}">
     <style>
         /*
         * Color Scheme (60-30-10 Rule)
@@ -44,8 +47,8 @@
 
             /* Text Colors */
             --color-text-primary: #333333;
-            --color-text-secondary: #616161;
-            --color-text-light: #9E9E9E;
+            --color-text-secondary: #4B4B4B;
+            --color-text-light: #6E6E6E;
             --color-text-on-secondary: #FFFFFF;
             --color-text-on-accent: #FFFFFF;
 
@@ -85,9 +88,9 @@
             --color-danger: #F44336;
 
             /* Text Colors */
-            --color-text-primary: #E0E0E0;
-            --color-text-secondary: #B0B0B0;
-            --color-text-light: #757575;
+            --color-text-primary: #FFFFFF;
+            --color-text-secondary: #FFFFFF;
+            --color-text-light: #1A1A1A;
             --color-text-on-secondary: #FFFFFF;
             --color-text-on-accent: #FFFFFF;
 
@@ -119,7 +122,7 @@
         }
 
         .sidebar {
-            width: 280px;
+            width: 250px;
             background-color: var(--color-sidebar);
             color: var(--color-sidebar-text);
             position: fixed;
@@ -131,7 +134,7 @@
         }
 
         .sidebar.collapsed {
-            width: 80px;
+            width: 60px;
         }
 
         .sidebar-text {
@@ -147,7 +150,7 @@
 
         .content-wrapper {
             flex: 1;
-            margin-left: 280px;
+            margin-left: 250px;
             display: flex;
             flex-direction: column;
             min-height: 100vh;
@@ -155,7 +158,7 @@
         }
 
         .content-wrapper.expanded {
-            margin-left: 80px;
+            margin-left: 60px;
         }
 
         .content-wrapper.full-width {
@@ -165,17 +168,18 @@
         .main-content {
             flex: 1;
             background-color: var(--color-primary);
-            padding: 1.5rem;
+            padding: 1rem;
         }
 
         .sidebar-link {
             display: flex;
             align-items: center;
-            padding: 0.9rem 1.5rem;
+            padding: 0.6rem 1.2rem;
             color: var(--color-sidebar-text);
             transition: all 0.2s;
-            margin: 0.35rem 0.6rem;
+            margin: 0.25rem 0.5rem;
             border-radius: 0.5rem;
+            font-size: 0.9rem;
         }
 
         .sidebar-link:hover {
@@ -191,21 +195,21 @@
         }
 
         .sidebar-link i {
-            margin-right: 14px;
-            width: 20px;
+            margin-right: 12px;
+            width: 18px;
             text-align: center;
-            font-size: 1.1rem;
+            font-size: 1rem;
         }
 
         .sidebar.collapsed .sidebar-link {
-            padding: 0.9rem 0;
+            padding: 0.6rem 0;
             justify-content: center;
-            margin: 0.35rem 0.4rem;
+            margin: 0.25rem 0.3rem;
         }
 
         .sidebar.collapsed .sidebar-link i {
             margin-right: 0;
-            font-size: 1.2rem;
+            font-size: 1rem;
         }
 
         .footer {
@@ -218,8 +222,8 @@
 
         .page-title {
             font-family: 'Nunito', sans-serif;
-            font-size: 1.75rem;
-            font-weight: 700;
+            font-size: 1.25rem;
+            font-weight: 600;
             text-align: center;
             color: var(--color-secondary);
             width: 100%;
@@ -252,7 +256,7 @@
         /* Card styling */
         .dashboard-card {
             background-color: var(--color-card-bg);
-            border-radius: 1rem;
+            border-radius: 0.75rem;
             box-shadow: var(--shadow-md);
             transition: transform 0.2s, box-shadow 0.2s;
             border: 1px solid var(--color-border);
@@ -284,6 +288,39 @@
 
         .dashboard-table tr:hover {
             background-color: var(--color-primary-dark);
+        }
+
+        /* Improve table row contrast in dark mode */
+        [data-theme="dark"] .dashboard-table td {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        [data-theme="dark"] .dashboard-table tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        [data-theme="dark"] .dashboard-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Empty state styling improvements */
+        [data-theme="dark"] .text-center[style*="var(--color-text-light)"] {
+            color: var(--color-text-secondary) !important;
+        }
+
+        /* Badge improvements for dark mode */
+        [data-theme="dark"] .badge-primary {
+            background-color: #2D2D2D;
+            color: #FFFFFF;
+        }
+
+        /* Links with better hover effects for both modes */
+        a {
+            transition: color 0.2s ease, opacity 0.2s ease;
+        }
+
+        a:hover {
+            opacity: 0.9;
         }
 
         /* Button styling */
@@ -370,6 +407,24 @@
             color: var(--color-danger);
         }
 
+        /* Dark mode specific alert styling */
+        [data-theme="dark"] .alert-success {
+            background-color: rgba(76, 175, 80, 0.2);
+            color: #81c786;
+        }
+
+        [data-theme="dark"] .alert-warning {
+            background-color: rgba(255, 152, 0, 0.2);
+            border-left-color: var(--color-warning);
+            color: #FFB74D;
+        }
+
+        [data-theme="dark"] .alert-danger {
+            background-color: rgba(244, 67, 54, 0.2);
+            border-left-color: var(--color-danger);
+            color: #EF9A9A;
+        }
+
         /* Badge styling */
         .badge {
             display: inline-flex;
@@ -405,14 +460,14 @@
     <!-- Sidebar - hidden on select ward page -->
     @if(!$isSelectWardPage)
     <div id="sidebar" class="sidebar">
-        <div class="p-5 border-b border-opacity-30 flex justify-between items-center" style="border-color: var(--color-border);">
-            <h1 class="text-xl font-bold text-center sidebar-text">NSBM</h1>
+        <div class="p-3 border-b border-opacity-30 flex justify-between items-center" style="border-color: var(--color-border);">
+            <h1 class="text-lg font-bold text-center sidebar-text">NSBM</h1>
             <button id="sidebarToggle" class="text-opacity-80 hover:text-opacity-100 transition-opacity" style="color: var(--color-sidebar-text);">
                 <i class="fas fa-chevron-right"></i>
             </button>
         </div>
 
-        <nav class="py-4 overflow-y-auto" style="max-height: calc(100vh - 80px);">
+        <nav class="py-2 overflow-y-auto" style="max-height: calc(100vh - 60px);">
             <a href="{{ request()->routeIs('emergency.dashboard') && session('selected_ward_name') === 'Emergency Department' ? route('emergency.dashboard') : route('dashboard') }}"
                class="sidebar-link {{ request()->routeIs('dashboard') || request()->routeIs('emergency.dashboard') ? 'active' : '' }}">
                 <i class="fas fa-home"></i> <span class="sidebar-text">Dashboard</span>
@@ -449,34 +504,16 @@
             <a href="{{ route('emergency.bor.index') }}" class="sidebar-link {{ request()->routeIs('emergency.bor.*') ? 'active' : '' }}">
                 <i class="fas fa-hospital-user"></i> <span class="sidebar-text">Emergency Room BOR</span>
             </a>
-            @else
-            <a href="#" class="sidebar-link">
-                <i class="fas fa-head-side-mask"></i> <span class="sidebar-text">Infectious Disease</span>
-            </a>
-            <a href="#" class="sidebar-link">
-                <i class="fas fa-hospital-user"></i> <span class="sidebar-text">Emergency Room BOR</span>
-            </a>
             @endif
-            <a href="#" class="sidebar-link">
-                <i class="fas fa-bed"></i> <span class="sidebar-text">Bed Availability Status</span>
-            </a>
-            <a href="#" class="sidebar-link">
+
+            <a href="{{ route('daily-data.index') }}" class="sidebar-link {{ request()->routeIs('daily-data.*') ? 'active' : '' }}">
                 <i class="fas fa-chart-line"></i> <span class="sidebar-text">Daily Data</span>
             </a>
             <a href="#" class="sidebar-link">
                 <i class="fas fa-user-md"></i> <span class="sidebar-text">Daily Profit Center Census</span>
             </a>
-            <a href="#" class="sidebar-link">
-                <i class="fas fa-user-nurse"></i> <span class="sidebar-text">Data Of Staff Admission</span>
-            </a>
-            <a href="#" class="sidebar-link">
-                <i class="fas fa-user-clock"></i> <span class="sidebar-text">Staff On EL/UPL</span>
-            </a>
             <a href="{{ route('support.access-control') }}" class="sidebar-link {{ request()->routeIs('support.access-control') ? 'active' : '' }}">
                 <i class="fas fa-shield-alt"></i> <span class="sidebar-text">Access Guide</span>
-            </a>
-            <a href="#" class="sidebar-link">
-                <i class="fas fa-cog"></i> <span class="sidebar-text">Settings</span>
             </a>
         </nav>
     </div>
@@ -485,14 +522,14 @@
     <!-- Content -->
     <div id="content" class="content-wrapper {{ $isSelectWardPage ? 'full-width' : '' }}">
         <!-- Header -->
-        <header class="px-6 py-5 flex justify-between items-center relative shadow-md" style="background-color: var(--color-card-bg); border-bottom: 1px solid var(--color-border);">
+        <header class="px-3 py-3 flex justify-between items-center relative shadow-sm" style="background-color: var(--color-card-bg); border-bottom: 1px solid var(--color-border);">
             <div class="flex items-center z-10">
                 @if(session('selected_ward_name') && !$isSelectWardPage)
                 @endif
             </div>
 
             <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <h2 class="page-title pointer-events-auto">
+                <h2 class="page-title text-lg md:text-xl font-semibold pointer-events-auto">
                     @if(session('selected_ward_name') && !$isSelectWardPage)
                     {{ session('selected_ward_name') }}
                     @else
@@ -508,9 +545,10 @@
                     <i class="fas fa-sun light-icon"></i>
                 </button>
                 <a href="{{ route('logout') }}" class="flex items-center" style="color: var(--color-text-primary);">
-                    <span class="text-sm font-medium mr-2">Welcome, {{ Auth::user()->username }}</span>
+                    <span class="text-sm font-medium mr-2 hidden sm:inline">{{ Auth::user()->username }}</span>
                     <span class="text-xs px-2 py-1 rounded transition" style="background-color: var(--color-primary-light); color: var(--color-text-primary);">
-                        <i class="fas fa-sign-out-alt mr-1"></i> Logout
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span class="hidden sm:inline ml-1">Logout</span>
                     </span>
                 </a>
             </div>
@@ -518,7 +556,7 @@
         </header>
 
         <!-- Page Content -->
-        <main class="main-content p-6">
+        <main class="main-content p-4">
             @if(session('error'))
                 <div class="alert alert-danger">
                     {{ session('error') }}
@@ -536,8 +574,8 @@
 
         <!-- Footer - hidden on select ward page -->
         @if(!$isSelectWardPage)
-        <footer class="footer p-5 text-center text-sm" style="background-color: var(--color-card-bg); border-color: var(--color-border);">
-            &copy; {{ date('Y') }} Nursing Service Bed Management. All rights reserved.
+        <footer class="footer py-2 px-4 text-center text-xs" style="background-color: var(--color-card-bg); border-color: var(--color-border);">
+            &copy; {{ date('Y') }} Nursing Service Bed Management
         </footer>
         @endif
     </div>

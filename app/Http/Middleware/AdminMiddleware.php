@@ -20,7 +20,7 @@ class AdminMiddleware
             return redirect()->route('login');
         }
 
-        if (Auth::user()->username !== 'admin') {
+        if (!Auth::user()->isAdmin()) {
             return redirect()->route('admin.access.denied');
         }
 

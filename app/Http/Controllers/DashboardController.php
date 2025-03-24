@@ -43,7 +43,7 @@ class DashboardController extends Controller
             ->get();
 
         // Get latest census data
-        $censusEntry = CensusEntry::where('ward_id', $ward->id)
+        $census = CensusEntry::where('ward_id', $ward->id)
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -56,6 +56,42 @@ class DashboardController extends Controller
             ->pluck('shift_id')
             ->toArray();
 
-        return view('dashboard', compact('ward', 'shifts', 'recentEntries', 'censusEntry', 'filledShifts', 'today'));
+        // Get shift information for morning, evening, and night
+        $morningShift = WardEntry::where('ward_id', $ward->id)
+            ->whereHas('shift', function($query) {
+                $query->where('name', 'AM SHIFT');
+            })
+            ->whereDate('created_at', $today)
+            ->first();
+
+        $eveningShift = WardEntry::where('ward_id', $ward->id)
+            ->whereHas('shift', function($query) {
+                $query->where('name', 'PM SHIFT');
+            })
+            ->whereDate('created_at', $today)
+            ->first();
+
+        $nightShift = WardEntry::where('ward_id', $ward->id)
+            ->whereHas('shift', function($query) {
+                $query->where('name', 'ND SHIFT');
+            })
+            ->whereDate('created_at', $today)
+            ->first();
+
+        // Set patients to an empty collection as the Patient model may not exist
+        $patients = collect();
+
+        return view('dashboard', compact(
+            'ward',
+            'shifts',
+            'recentEntries',
+            'census',
+            'filledShifts',
+            'today',
+            'morningShift',
+            'eveningShift',
+            'nightShift',
+            'patients'
+        ));
     }
 }

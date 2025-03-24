@@ -1,118 +1,139 @@
 @extends('layout')
 
-@section('title', 'Delivery Details - NSBM')
-@section('header', 'Delivery Details')
+@section('title', 'View Delivery Record - NSBM')
+@section('header', 'View Delivery Record')
 
 @section('content')
-<div class="bg-white rounded-lg shadow-md p-6">
-    <div class="border-b border-gray-200 pb-4 mb-6">
+<div class="mb-6">
+    <a href="{{ route('delivery.index') }}" class="text-secondary hover:text-secondary-dark">
+        <i class="fas fa-arrow-left mr-2"></i>Back to Delivery Records
+    </a>
+</div>
+
+<div class="dashboard-card p-6 mb-6">
+    <div class="border-b pb-4 mb-6" style="border-color: var(--color-border);">
         <div class="flex items-center">
-            <div class="bg-blue-100 rounded-full p-2 mr-3">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div class="rounded-full p-2 mr-3" style="background-color: var(--color-primary-light);">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--color-primary);">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                 </svg>
             </div>
             <div>
-                <h3 class="text-lg font-medium">{{ $ward->name }}</h3>
-                <p class="text-sm text-gray-600">Delivery report for {{ $delivery->report_date->format('M d, Y') }}</p>
-                <p class="text-xs text-gray-500">Created by {{ $delivery->user->username }} on {{ $delivery->created_at->format('M d, Y H:i') }}</p>
+                <h3 class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $ward->name }}</h3>
+                <p class="text-sm" style="color: var(--color-text-secondary);">Delivery record for {{ $delivery->report_date->format('d M Y') }}</p>
             </div>
         </div>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <!-- Left column -->
-        <div>
-            <h3 class="text-lg font-medium mb-4">Primary Deliveries</h3>
-            <div class="space-y-4">
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">SVD:</span>
-                    <span class="text-lg">{{ $delivery->svd }}</span>
-                </div>
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">LSCS:</span>
-                    <span class="text-lg">{{ $delivery->lscs }}</span>
-                </div>
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">Vacuum:</span>
-                    <span class="text-lg">{{ $delivery->vacuum }}</span>
-                </div>
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">Forceps:</span>
-                    <span class="text-lg">{{ $delivery->forceps }}</span>
-                </div>
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">Breech:</span>
-                    <span class="text-lg">{{ $delivery->breech }}</span>
-                </div>
+    <!-- Report Details -->
+    <div class="mb-6">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-medium" style="color: var(--color-text-primary);">Delivery Details</h3>
+
+            <div class="flex space-x-2">
+                <a href="{{ route('delivery.edit', $delivery->id) }}" class="btn btn-secondary">
+                    <i class="fas fa-edit mr-2"></i> Edit
+                </a>
+
+                @can('delete', $delivery)
+                <form action="{{ route('delivery.destroy', $delivery->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this record?');">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash mr-2"></i> Delete
+                    </button>
+                </form>
+                @endcan
             </div>
         </div>
 
-        <!-- Right column -->
-        <div>
-            <h3 class="text-lg font-medium mb-4">Other Deliveries</h3>
-            <div class="space-y-4">
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">Eclampsia:</span>
-                    <span class="text-lg">{{ $delivery->eclampsia }}</span>
+        <div class="p-4 mb-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+            <div class="flex justify-between">
+                <div>
+                    <p class="mb-1" style="color: var(--color-text-secondary);">Report Date</p>
+                    <p class="font-medium" style="color: var(--color-text-primary);">{{ $delivery->report_date->format('d M Y') }}</p>
                 </div>
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">Twin:</span>
-                    <span class="text-lg">{{ $delivery->twin }}</span>
+                <div>
+                    <p class="mb-1" style="color: var(--color-text-secondary);">Total Deliveries</p>
+                    <p class="font-medium text-lg" style="color: var(--color-primary);">{{ $delivery->total }}</p>
                 </div>
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">MRP:</span>
-                    <span class="text-lg">{{ $delivery->mrp }}</span>
+                <div>
+                    <p class="mb-1" style="color: var(--color-text-secondary);">Created By</p>
+                    <p class="font-medium" style="color: var(--color-text-primary);">{{ $delivery->user->name }}</p>
                 </div>
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">FSB/MBS:</span>
-                    <span class="text-lg">{{ $delivery->fsb_mbs }}</span>
-                </div>
-                <div class="flex justify-between items-center px-4 py-3 bg-gray-50 rounded-lg">
-                    <span class="font-medium">BBA:</span>
-                    <span class="text-lg">{{ $delivery->bba }}</span>
+                <div>
+                    <p class="mb-1" style="color: var(--color-text-secondary);">Last Updated</p>
+                    <p class="font-medium" style="color: var(--color-text-primary);">{{ $delivery->updated_at->format('d M Y H:i') }}</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Total -->
-    <div class="border-t border-gray-200 pt-6 mb-6">
-        <div class="flex justify-between items-center px-6 py-4 bg-blue-50 rounded-lg">
-            <span class="font-semibold text-xl">Total Deliveries:</span>
-            <span class="text-2xl font-bold text-blue-700">{{ $delivery->total }}</span>
+    <!-- Delivery Types -->
+    <div class="border-t pt-6 mb-6" style="border-color: var(--color-border);">
+        <h3 class="text-lg font-medium mb-4" style="color: var(--color-text-primary);">Delivery Types</h3>
+
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">SVD</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->svd }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">LSCS</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->lscs }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">Vacuum</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->vacuum }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">Forceps</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->forceps }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">Breech</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->breech }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">Eclampsia</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->eclampsia }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">Twin</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->twin }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">MRP</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->mrp }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">FSB/MBS</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->fsb_mbs }}</p>
+            </div>
+
+            <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+                <p class="text-sm mb-1" style="color: var(--color-text-secondary);">BBA</p>
+                <p class="text-lg font-medium" style="color: var(--color-text-primary);">{{ $delivery->bba }}</p>
+            </div>
         </div>
     </div>
 
-    <!-- Notes -->
+    <!-- Notes Section -->
     @if($delivery->notes)
-    <div class="border-t border-gray-200 pt-6 mb-6">
-        <h3 class="text-lg font-medium mb-3">Additional Notes</h3>
-        <div class="bg-gray-50 p-4 rounded-lg">
-            <p class="text-gray-700 whitespace-pre-line">{{ $delivery->notes }}</p>
+    <div class="border-t pt-6" style="border-color: var(--color-border);">
+        <h3 class="text-lg font-medium mb-4" style="color: var(--color-text-primary);">Notes</h3>
+        <div class="p-4 rounded-lg" style="background-color: var(--color-bg-alt); border: 1px solid var(--color-border);">
+            <p style="color: var(--color-text-primary);">{{ $delivery->notes }}</p>
         </div>
     </div>
     @endif
-
-    <!-- Action Buttons -->
-    <div class="flex justify-between items-center mt-8">
-        <a href="{{ route('delivery.index') }}" class="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded-md transition text-gray-700">
-            <i class="fas fa-arrow-left mr-1"></i> Back to List
-        </a>
-        <div class="flex space-x-3">
-            <a href="{{ route('delivery.edit', $delivery) }}" class="px-4 py-2 bg-amber-100 text-amber-800 hover:bg-amber-200 rounded-md transition">
-                <i class="fas fa-edit mr-1"></i> Edit
-            </a>
-            @if(Auth::user()->username === 'admin')
-            <form action="{{ route('delivery.destroy', $delivery) }}" method="POST" class="inline" onsubmit="return confirm('Are you sure you want to delete this record?');">
-                @csrf
-                @method('DELETE')
-                <button type="submit" class="px-4 py-2 bg-red-100 text-red-800 hover:bg-red-200 rounded-md transition">
-                    <i class="fas fa-trash-alt mr-1"></i> Delete
-                </button>
-            </form>
-            @endif
-        </div>
-    </div>
 </div>
 @endsection
