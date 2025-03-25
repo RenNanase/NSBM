@@ -92,7 +92,7 @@ class WardController extends Controller
             $nextShiftId = $shifts->where('name', 'AM SHIFT')->first()->id ?? null;
         }
 
-        // Get the last filled shift data
+        // First check if there are any entries for today
         $lastEntry = null;
         if (!empty($filledShifts)) {
             // Find the most recent entry for this ward today
@@ -107,6 +107,30 @@ class WardController extends Controller
                 $cfPatient = $lastEntry->cf_patient + $lastEntry->total_admission +
                              $lastEntry->total_transfer_in - $lastEntry->total_transfer_out -
                              $lastEntry->total_discharge - $lastEntry->aor;
+
+                // Round to nearest integer and ensure it's not negative
+                $cfPatient = max(0, round($cfPatient));
+            }
+        }
+
+        // If no entries for today, get the most recent entry regardless of date
+        if (!$lastEntry) {
+            $lastEntry = WardEntry::where('ward_id', $wardId)
+                ->orderBy('created_at', 'desc')
+                ->first();
+
+            if ($lastEntry) {
+                // If it's a night shift entry (last shift of the day),
+                // use the total patients as the CF for the next day
+                if (Shift::find($lastEntry->shift_id)->name === 'ND SHIFT') {
+                    // For ND shift, use the total patient value directly
+                    $cfPatient = $lastEntry->total_patient;
+                } else {
+                    // For other shifts, calculate as before
+                    $cfPatient = $lastEntry->cf_patient + $lastEntry->total_admission +
+                                $lastEntry->total_transfer_in - $lastEntry->total_transfer_out -
+                                $lastEntry->total_discharge - $lastEntry->aor;
+                }
 
                 // Round to nearest integer and ensure it's not negative
                 $cfPatient = max(0, round($cfPatient));
@@ -256,41 +280,39 @@ class WardController extends Controller
             }
         }
 
-        // Create ward entry
-        $entry = new WardEntry([
-            'user_id' => Auth::id(),
-            'ward_id' => $ward->id,
-            'shift_id' => $validatedData['shift_id'],
-            'cf_patient' => $validatedData['cf_patient'],
-            'total_patient' => $total_patient,
-            'licensed_bed_bor' => $licensedBedBor,
-            'total_bed_bor' => $totalBedBor,
-            'total_admission' => $validatedData['total_admission'],
-            'total_transfer_in' => $validatedData['total_transfer_in'],
-            'total_transfer_out' => $validatedData['total_transfer_out'],
-            'total_discharge' => $validatedData['total_discharge'],
-            'aor' => $validatedData['aor'],
-            'total_staff_on_duty' => $validatedData['total_staff_on_duty'],
-            'overtime' => $validatedData['overtime'],
-            'total_daily_patients' => isset($validatedData['total_daily_patients']) ? $validatedData['total_daily_patients'] : null,
-        ]);
+        // Create a new entry
+        $entry = new WardEntry();
+        $entry->ward_id = $wardId;
+        $entry->shift_id = $request->shift_id;
+        $entry->user_id = Auth::id();
+        $entry->cf_patient = $cfPatient;
+        $entry->total_admission = $totalAdmission;
+        $entry->total_transfer_in = $totalTransferIn;
+        $entry->total_transfer_out = $totalTransferOut;
+        $entry->total_discharge = $totalDischarge;
+        $entry->aor = $aor;
+        $entry->total_staff_on_duty = $validatedData['total_staff_on_duty'];
+        $entry->overtime = $validatedData['overtime'];
+        $entry->total_patient = $total_patient;
+        $entry->licensed_bed_bor = $licensedBedBor;
+        $entry->total_bed_bor = $totalBedBor;
+
+        // Add shift-specific fields
+        if (strpos($shiftName, 'ND') !== false && isset($validatedData['total_daily_patients'])) {
+            $entry->total_daily_patients = $validatedData['total_daily_patients'];
+        }
 
         $entry->save();
 
-        // Calculate CF patient for the next shift
-        // CF patient next shift = CF patient + total_admission + total_transfer_in - total_transfer_out - total_discharge - AOR (At Own Risk Discharges)
-        $nextShiftCfPatient = $cfPatient + $totalAdmission + $totalTransferIn - $totalTransferOut - $totalDischarge - $aor;
+        // Calculate the CF patient for the next shift and store it in the session
+        $nextShiftCfPatient = $total_patient;
+        session([
+            'next_shift_cf_patient' => $nextShiftCfPatient,
+            'next_shift_cf_patient_ward_id' => $wardId,
+            'next_shift_cf_patient_date' => $today
+        ]);
 
-        // Round to nearest integer and ensure it's not negative
-        $nextShiftCfPatient = max(0, round($nextShiftCfPatient));
-
-        // Store the calculated CF patient value in the session for the next shift
-        session(['next_shift_cf_patient' => $nextShiftCfPatient]);
-        session(['next_shift_cf_patient_ward_id' => $ward->id]);
-        session(['next_shift_cf_patient_date' => $today]);
-
-        return redirect()->route('dashboard')
-            ->with('success', 'Ward entry recorded successfully.');
+        return redirect()->route('dashboard')->with('success', 'Ward entry added successfully.');
     }
 
     /**
@@ -321,24 +343,64 @@ class WardController extends Controller
      */
     public function updateEntry(Request $request, WardEntry $entry)
     {
-        // Get the ward that belongs to this entry
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // Get the ward from the entry
         $ward = $entry->ward;
 
-        // Validate the form input
-        $validatedData = $request->validate([
-            'cf_patient' => 'required|integer|min:0',
+        // Check if user has access to this ward
+        if (!Auth::user()->wards->contains($ward->id)) {
+            return redirect()->route('ward.select')
+                ->with('error', 'You do not have access to this ward.');
+        }
+
+        // Get the shift details to determine which validation rules to apply
+        $shift = Shift::findOrFail($entry->shift_id);
+        $shiftName = $shift->name;
+
+        // Basic validation rules that apply to all shifts
+        $validationRules = [
             'total_admission' => 'required|integer|min:0',
             'total_transfer_in' => 'required|integer|min:0',
             'total_transfer_out' => 'required|integer|min:0',
             'total_discharge' => 'required|integer|min:0',
-            'aor' => 'required|integer|min:0',
+            'aor' => 'required|integer|min:0', // At Own Risk discharges
             'total_staff_on_duty' => 'required|integer|min:0',
             'overtime' => 'required|integer|min:0',
-            'total_daily_patients' => 'nullable|integer|min:0',
-        ]);
+        ];
 
-        // Extract values for calculation
-        $cfPatient = $validatedData['cf_patient'];
+        // Only admins can change the CF patient value
+        if (Auth::user()->isAdmin()) {
+            $validationRules['cf_patient'] = 'required|integer|min:0';
+        }
+
+        // Handle normal validation
+        $validatedData = $request->validate($validationRules);
+
+        // For non-admin users, keep the original CF patient value
+        if (!Auth::user()->isAdmin()) {
+            $cfPatient = $entry->cf_patient;
+        } else {
+            $cfPatient = $validatedData['cf_patient'];
+        }
+
+        // Update the basic data
+        $entry->total_admission = $validatedData['total_admission'];
+        $entry->total_transfer_in = $validatedData['total_transfer_in'];
+        $entry->total_transfer_out = $validatedData['total_transfer_out'];
+        $entry->total_discharge = $validatedData['total_discharge'];
+        $entry->aor = $validatedData['aor'];
+        $entry->total_staff_on_duty = $validatedData['total_staff_on_duty'];
+        $entry->overtime = $validatedData['overtime'];
+
+        // If admin updated the CF patient value
+        if (Auth::user()->isAdmin()) {
+            $entry->cf_patient = $cfPatient;
+        }
+
+        // Recalculate the values
         $totalAdmission = $validatedData['total_admission'];
         $totalTransferIn = $validatedData['total_transfer_in'];
         $totalTransferOut = $validatedData['total_transfer_out'];
@@ -346,47 +408,50 @@ class WardController extends Controller
         $aor = $validatedData['aor'];
 
         // Calculate total patients using the formula:
-        // Total Patients = CF Patients + Total Admissions + Total Transfer In - Total Discharges - Total Transfer Out - AOR (At Own Risk Discharges)
+        // Total Patients = CF Patients + Total Admissions + Total Transfer In - Total Discharges - Total Transfer Out - AOR
         $totalPatients = $cfPatient + $totalAdmission + $totalTransferIn - $totalDischarge - $totalTransferOut - $aor;
 
-        // Ensure total patients is not negative
-        $totalPatients = max(0, $totalPatients);
-
-        // Calculate BOR based on Licensed Beds (Licensed Bed BOR)
-        // BOR (%) = (Total Patients / Total Licensed Beds Available) * 100
+        // Calculate BORs
         $licensedBedBor = 0;
         if ($ward->total_licensed_op_beds > 0) {
             $licensedBedBor = ($totalPatients / $ward->total_licensed_op_beds) * 100;
-            // Round to exactly 2 decimal places
             $licensedBedBor = round($licensedBedBor, 2);
         }
 
-        // Calculate BOR based on Total Beds (Total Bed BOR)
-        // BOR (%) = (Total Patients / Total Beds) * 100
         $totalBedBor = 0;
         if ($ward->total_bed > 0) {
             $totalBedBor = ($totalPatients / $ward->total_bed) * 100;
-            // Round to exactly 2 decimal places
             $totalBedBor = round($totalBedBor, 2);
         }
 
-        // Update the entry
-        $entry->update([
-            'cf_patient' => $validatedData['cf_patient'],
-            'total_patient' => $totalPatients,
-            'licensed_bed_bor' => $licensedBedBor,
-            'total_bed_bor' => $totalBedBor,
-            'total_admission' => $validatedData['total_admission'],
-            'total_transfer_in' => $validatedData['total_transfer_in'],
-            'total_transfer_out' => $validatedData['total_transfer_out'],
-            'total_discharge' => $validatedData['total_discharge'],
-            'aor' => $validatedData['aor'],
-            'total_staff_on_duty' => $validatedData['total_staff_on_duty'],
-            'overtime' => $validatedData['overtime'],
-            'total_daily_patients' => isset($validatedData['total_daily_patients']) ? $validatedData['total_daily_patients'] : null,
-        ]);
+        $entry->total_patient = $totalPatients;
+        $entry->licensed_bed_bor = $licensedBedBor;
+        $entry->total_bed_bor = $totalBedBor;
 
-        return redirect()->route('dashboard')
-            ->with('success', 'Ward entry updated successfully.');
+        // Handle ND shift's total_daily_patients
+        if (strpos($shiftName, 'ND') !== false && $request->has('total_daily_patients')) {
+            $entry->total_daily_patients = $request->total_daily_patients;
+        }
+
+        $entry->save();
+
+        // If this is the most recent entry, calculate the CF patient for the next shift
+        $today = now()->format('Y-m-d');
+        $latestEntry = WardEntry::where('ward_id', $entry->ward_id)
+            ->whereDate('created_at', $today)
+            ->orderBy('created_at', 'desc')
+            ->first();
+
+        if ($latestEntry && $latestEntry->id === $entry->id) {
+            // This is the latest entry, update the session with new calculated CF patient
+            $nextShiftCfPatient = $totalPatients;
+            session([
+                'next_shift_cf_patient' => $nextShiftCfPatient,
+                'next_shift_cf_patient_ward_id' => $entry->ward_id,
+                'next_shift_cf_patient_date' => $today
+            ]);
+        }
+
+        return redirect()->route('dashboard')->with('success', 'Ward entry updated successfully.');
     }
 }

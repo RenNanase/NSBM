@@ -18,13 +18,13 @@
             style="border-color: var(--color-border);">
             <thead>
                 <tr>
-                    <th class="py-3 px-4 text-left font-semibold">Ward</th>
+                    <th class="py-3 px-4 text-center font-semibold">Ward</th>
                     <th class="py-3 px-4 text-center font-semibold">C/F Patient</th>
                     <th class="py-3 px-4 text-center font-semibold">AM Shift</th>
                     <th class="py-3 px-4 text-center font-semibold">PM Shift</th>
                     <th class="py-3 px-4 text-center font-semibold">Night Duty</th>
                     <th class="py-3 px-4 text-center font-semibold">Total Daily Patient</th>
-                    <th class="py-3 px-4 text-left font-semibold">Staff Name</th>
+                    <th class="py-3 px-4 text-center font-semibold">Staff Name</th>
                     <th class="py-3 px-4 text-center font-semibold">Date</th>
                     @if(Auth::user()->isAdmin())
                     <th class="py-3 px-4 text-center font-semibold">Actions</th>
@@ -99,7 +99,7 @@
                         <span style="color: var(--color-text-light);">-</span>
                         @endif
                     </td>
-                    <td class="py-4 px-4">{{ $entry->user->username }}</td>
+                    <td class="py-4 px-4 text-center">{{ $entry->user->username }}</td>
                     <td class="py-4 px-4 text-center text-sm">
                         <div class="font-medium">{{ $entry->created_at->format('M d, Y') }}</div>
                         <div style="color: var(--color-text-light);">{{ $entry->created_at->format('H:i') }}</div>
@@ -119,6 +119,7 @@
     </div>
 </div>
 
+{{-- ward info --}}
 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
     <div class="dashboard-card p-6">
         <h3 class="text-lg font-bold mb-5 pb-2 border-b"

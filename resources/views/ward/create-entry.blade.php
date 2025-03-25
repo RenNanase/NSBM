@@ -59,13 +59,23 @@
                 <input type="number" name="cf_patient" id="cf_patient" min="0"
                 class="w-full px-4 py-2 border rounded-md focus:outline-none"
                 style="{{ isset($cfPatient) && $cfPatient > 0 ? 'background-color: var(--color-success-light); border-color: var(--color-success);' : 'background-color: var(--color-input-bg); border-color: var(--color-border);' }} color: var(--color-text-primary);"
-                value="{{ old('cf_patient', $cfPatient ?? 0) }}" required>
+                value="{{ old('cf_patient', $cfPatient ?? 0) }}"
+                {{ Auth::user()->isAdmin() ? '' : 'readonly' }}
+                required>
                 @if(isset($cfPatient) && $cfPatient > 0)
                     <p class="text-sm mt-1" style="color: var(--color-success);">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                         </svg>
                         Auto-filled from previous shift's data ({{ $cfPatient }})
+                    </p>
+                @endif
+                @if(!Auth::user()->isAdmin())
+                    <p class="text-sm mt-1" style="color: var(--color-text-secondary);">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        Only administrators can modify this value. It is automatically calculated from the previous shift.
                     </p>
                 @endif
                 @error('cf_patient')

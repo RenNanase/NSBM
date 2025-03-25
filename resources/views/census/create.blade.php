@@ -20,7 +20,7 @@
     </div>
 
     <div class="mb-6 p-4 rounded-lg border" style="background-color: var(--color-secondary-light); border-color: var(--color-secondary-light);">
-        <h4 class="font-medium mb-2" style="color: var(--color-secondary);">About 24 Hours Census</h4>
+        <h4 class="font-medium mb-2" style="color: var(--color-primary-dark);">About 24 Hours Census</h4>
         <p class="text-sm" style="color: var(--color-text-primary);">
             The 24 Hours Census is performed once per day (typically at midnight) and provides a snapshot of the ward's occupancy.
             It is used for statistical analysis and administrative reporting. The Bed Occupancy Rate (BOR) is automatically calculated
