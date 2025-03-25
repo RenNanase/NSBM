@@ -5,7 +5,7 @@ Welcome to my GitHub profile! I'm a passionate **software engineer** and **Larav
 ---
 
 ### 🚀 About Me
-- 🔭 Currently working on a **Hospital Management System** using **Laravel 12**
+- 🔭 Currently working on a *Nurse Service Bed Management** using **Laravel 12**
 - 💡 Exploring **AI-powered applications** and **web development best practices**
 - 🎨 Passionate about **UI/UX design** with a focus on **Tailwind CSS**
 - 📚 Always learning new technologies and improving my coding skills
