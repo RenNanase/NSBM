@@ -352,9 +352,9 @@ class WardController extends Controller
         $ward = $entry->ward;
 
         // Check if user has access to this ward
-        if (!Auth::user()->wards->contains($ward->id)) {
-            return redirect()->route('ward.select')
-                ->with('error', 'You do not have access to this ward.');
+        $hasAccess = Auth::user()->wards->contains($ward->id);
+        if (!$hasAccess && !(Auth::user()->is_admin || Auth::user()->username === 'admin')) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this ward');
         }
 
         // Get the shift details to determine which validation rules to apply
@@ -373,7 +373,7 @@ class WardController extends Controller
         ];
 
         // Only admins can change the CF patient value
-        if (Auth::user()->isAdmin()) {
+        if (Auth::user()->is_admin || Auth::user()->username === 'admin') {
             $validationRules['cf_patient'] = 'required|integer|min:0';
         }
 
@@ -381,7 +381,7 @@ class WardController extends Controller
         $validatedData = $request->validate($validationRules);
 
         // For non-admin users, keep the original CF patient value
-        if (!Auth::user()->isAdmin()) {
+        if (!(Auth::user()->is_admin || Auth::user()->username === 'admin')) {
             $cfPatient = $entry->cf_patient;
         } else {
             $cfPatient = $validatedData['cf_patient'];
@@ -397,7 +397,7 @@ class WardController extends Controller
         $entry->overtime = $validatedData['overtime'];
 
         // If admin updated the CF patient value
-        if (Auth::user()->isAdmin()) {
+        if (Auth::user()->is_admin || Auth::user()->username === 'admin') {
             $entry->cf_patient = $cfPatient;
         }
 
@@ -476,7 +476,7 @@ class WardController extends Controller
 
         // Check if user has access to the ward
         $hasAccess = Auth::user()->wards->contains($ward->id);
-        if (!$hasAccess && !Auth::user()->isAdmin()) {
+        if (!$hasAccess && !(Auth::user()->is_admin || Auth::user()->username === 'admin')) {
             return redirect()->route('dashboard')->with('error', 'You do not have access to this ward');
         }
 

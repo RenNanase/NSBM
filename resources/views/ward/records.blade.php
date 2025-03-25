@@ -62,7 +62,7 @@
     </div>
 
     <!-- Record Date Display -->
-    <div class="mb-6 p-4 rounded-lg" style="background-color: var(--color-secondary-light); border: 1px solid var(--color-border);">
+    <div class="mb-6 p-4 rounded-lg" style="background-color: var(--color-primary-dark); border: 1px solid var(--color-border);">
         <h2 class="text-xl font-semibold" style="color: var(--color-secondary);">
             Records for {{ $recordDate->format('d M Y') }}
         </h2>

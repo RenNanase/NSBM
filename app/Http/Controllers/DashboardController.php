@@ -35,20 +35,20 @@ class DashboardController extends Controller
                 ->with('error', 'You do not have access to this ward.');
         }
 
-        // Get recent entries for this ward
+        // Get today's date
+        $today = now()->format('Y-m-d');
+
+        // Get recent entries for this ward (only for today)
         $recentEntries = WardEntry::where('ward_id', $ward->id)
+            ->whereDate('created_at', $today)
             ->with(['shift', 'user'])
             ->orderBy('created_at', 'desc')
-            ->take(10) // Increased to make sure we get all today's entries
             ->get();
 
         // Get latest census data
         $censusEntry = CensusEntry::where('ward_id', $ward->id)
             ->orderBy('created_at', 'desc')
             ->first();
-
-        // Get today's date
-        $today = now()->format('Y-m-d');
 
         // Find shifts that have been filled today
         $filledShifts = WardEntry::where('ward_id', $ward->id)

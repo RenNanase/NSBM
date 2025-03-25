@@ -6,9 +6,9 @@
 @section('content')
 <div class="dashboard-card p-6 mb-8">
     <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-bold" style="color: var(--color-secondary);">Recent Entries</h3>
+        <h3 class="text-xl font-bold" style="color: var(--color-secondary);">Today's Ward Entries</h3>
         <div class="text-sm" style="color: var(--color-text-light);">
-            <i class="fas fa-clock mr-1"></i> Last updated: {{ now()->format('d M Y, H:i') }}
+            <i class="fas fa-calendar-day mr-1"></i> {{ now()->format('d M Y') }}
         </div>
     </div>
 

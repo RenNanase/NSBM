@@ -41,15 +41,15 @@ class EmergencyDashboardController extends Controller
             return redirect()->route('dashboard');
         }
 
-        // Get recent entries for this ward
-        $recentEntries = WardEntry::where('ward_id', $ward->id)
-            ->with(['shift', 'user'])
-            ->orderBy('created_at', 'desc')
-            ->take(10)
-            ->get();
-
         // Get today's date
         $today = now()->format('Y-m-d');
+
+        // Get recent entries for this ward (only for today)
+        $recentEntries = WardEntry::where('ward_id', $ward->id)
+            ->whereDate('created_at', $today)
+            ->with(['shift', 'user'])
+            ->orderBy('created_at', 'desc')
+            ->get();
 
         // Get current BOR data
         $currentBOR = $recentEntries->isEmpty() ? null : $recentEntries->first()->total_bed_bor;
