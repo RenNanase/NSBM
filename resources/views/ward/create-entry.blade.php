@@ -19,6 +19,19 @@
         </div>
     </div>
 
+    <!-- View Records Button -->
+    <div class="mb-6">
+        <a href="{{ route('ward.records') }}" class="btn btn-secondary">
+            <i class="fas fa-clipboard-list mr-2"></i> View Ward Records
+        </a>
+        <p class="text-sm mt-2" style="color: var(--color-text-secondary);">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 inline-block" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="color: var(--color-primary);">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+            View all entries recorded for this ward for any date.
+        </p>
+    </div>
+
     <form action="{{ route('ward.entry.store') }}" method="POST">
         @csrf
 

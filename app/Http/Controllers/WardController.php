@@ -7,6 +7,7 @@ use App\Models\Shift;
 use App\Models\WardEntry;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class WardController extends Controller
 {
@@ -453,5 +454,53 @@ class WardController extends Controller
         }
 
         return redirect()->route('dashboard')->with('success', 'Ward entry updated successfully.');
+    }
+
+    /**
+     * Display all entries for a specific date for the selected ward.
+     */
+    public function viewRecords(Request $request)
+    {
+        // Check if user is authenticated
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
+        // Get the ward from session
+        $wardId = session('selected_ward_id');
+        if (!$wardId) {
+            return redirect()->route('ward.select')->with('error', 'Please select a ward first');
+        }
+
+        $ward = Ward::findOrFail($wardId);
+
+        // Check if user has access to the ward
+        $hasAccess = Auth::user()->wards->contains($ward->id);
+        if (!$hasAccess && !Auth::user()->isAdmin()) {
+            return redirect()->route('dashboard')->with('error', 'You do not have access to this ward');
+        }
+
+        // Get the date from the request or use today's date
+        $recordDate = $request->has('date')
+            ? Carbon::parse($request->input('date'))
+            : now();
+
+        // Get all entries for the ward and date
+        $entries = WardEntry::with(['shift', 'user'])
+            ->where('ward_id', $ward->id)
+            ->whereDate('created_at', $recordDate->format('Y-m-d'))
+            ->orderBy('created_at')
+            ->get();
+
+        // Get all shifts
+        $shifts = Shift::all();
+
+        // Identify which shifts are missing for the date
+        $recordedShiftIds = $entries->pluck('shift_id')->toArray();
+        $missingShifts = $shifts->filter(function($shift) use ($recordedShiftIds) {
+            return !in_array($shift->id, $recordedShiftIds);
+        });
+
+        return view('ward.records', compact('ward', 'entries', 'shifts', 'recordDate', 'missingShifts'));
     }
 }

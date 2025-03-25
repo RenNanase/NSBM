@@ -66,6 +66,7 @@ Route::middleware('auth')->group(function () {
             // Ward entries
             Route::get('/ward/entry/create', [WardController::class, 'createEntry'])->name('ward.entry.create');
             Route::post('/ward/entry/store', [WardController::class, 'storeEntry'])->name('ward.entry.store');
+            Route::get('/ward/records', [WardController::class, 'viewRecords'])->name('ward.records');
 
             // Census entries
             Route::get('/census/create', [CensusController::class, 'create'])->name('census.create');
