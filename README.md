@@ -1,33 +1,38 @@
-# Hi there! 👋 I'm Ren
+### Hi there, I'm RenNanase! 👋
 
-![Profile Views](https://komarev.com/ghpvc/?username=your-username&label=Profile%20Views&color=blue&style=flat)
-
-## 🚀 About Me
-
-🎯 **Software Developer | UI/UX Enthusiast**  
-💡 Passionate about Laravel, JavaScript, and building modern web applications.  
-🌱 Currently learning advanced **Laravel 12** and UI/UX best practices.  
-⚡ Fun fact: I love designing intuitive hospital management systems!  
+Welcome to my GitHub profile! I'm a passionate **software engineer** and **Laravel expert** working on building efficient and user-friendly applications.
 
 ---
 
-## 🛠️ Tech Stack
-
-![Laravel](https://img.shields.io/badge/Laravel-%23FF2D20.svg?style=for-the-badge&logo=laravel&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-%23F7DF1E.svg?style=for-the-badge&logo=javascript&logoColor=black) ![MySQL](https://img.shields.io/badge/MySQL-%2300f.svg?style=for-the-badge&logo=mysql&logoColor=white) ![TailwindCSS](https://img.shields.io/badge/TailwindCSS-%2306B6D4.svg?style=for-the-badge&logo=tailwindcss&logoColor=white)
-
----
-
-## 📊 GitHub Stats
-
-![GitHub Stats](https://github-readme-stats.vercel.app/api?username=your-username&show_icons=true&theme=radical)  
-![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=your-username&layout=compact&theme=radical)
+### 🚀 About Me
+- 🔭 Currently working on a **Hospital Management System** using **Laravel 12**
+- 💡 Exploring **AI-powered applications** and **web development best practices**
+- 🎨 Passionate about **UI/UX design** with a focus on **Tailwind CSS**
+- 📚 Always learning new technologies and improving my coding skills
 
 ---
 
-## 📫 Connect With Me
+### 🛠️ Tech Stack
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/yourprofile) [![Twitter](https://img.shields.io/badge/Twitter-%231DA1F2.svg?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/yourprofile)
+![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
 ---
 
-💬 **Feel free to reach out if you want to collaborate on exciting projects!** 🚀
+### 📈 GitHub Stats
+
+![RenNanase's GitHub Stats](https://github-readme-stats.vercel.app/api?username=RenNanase&show_icons=true&theme=radical)
+
+---
+
+### 📫 Connect with Me
+
+[![GitHub](https://img.shields.io/badge/GitHub-333?style=for-the-badge&logo=github&logoColor=white)](https://github.com/RenNanase)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/your-profile)
+
+---
+
+💡 *"Building scalable and user-friendly applications, one line of code at a time."* 🚀
