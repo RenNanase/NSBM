@@ -1,6 +1,6 @@
-### Hi there, I'm RenNanase! 👋
+usi### Hi there, I'm RenNanase! 👋
 
-Welcome to my GitHub profile! I'm a passionate **software engineer** and **Laravel expert** working on building efficient and user-friendly applications.
+Welcome to my GitHub profile! I'm a passionate **software engineer** and **Laravel enthusiast** working on building efficient and user-friendly applications.
 
 ---
 
