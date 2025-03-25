@@ -29,44 +29,54 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="form-group">
-                    <label for="death">Deaths</label>
-                    <input type="number" id="death" name="death" min="0" value="{{ old('death', $dailyData->death) }}" class="@error('death') border-accent @enderror">
+                    <label for="death" class="block mb-2" style="color: var(--color-text-primary);">Deaths</label>
+                    <input type="number" id="death" name="death" min="0" value="{{ old('death', $dailyData->death) }}"
+                           class="w-full px-4 py-2 border rounded-md focus:outline-none text-center @error('death') border-accent @enderror"
+                           style="background-color: var(--color-input-bg); border-color: var(--color-border); color: var(--color-text-primary);">
                     @error('death')
-                        <p class="error-message">{{ $message }}</p>
+                        <p class="text-accent text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="neonatal_jaundice">Neonatal Jaundice</label>
-                    <input type="number" id="neonatal_jaundice" name="neonatal_jaundice" min="0" value="{{ old('neonatal_jaundice', $dailyData->neonatal_jaundice) }}" class="@error('neonatal_jaundice') border-accent @enderror">
+                    <label for="neonatal_jaundice" class="block mb-2" style="color: var(--color-text-primary);">Neonatal Jaundice</label>
+                    <input type="number" id="neonatal_jaundice" name="neonatal_jaundice" min="0" value="{{ old('neonatal_jaundice', $dailyData->neonatal_jaundice) }}"
+                           class="w-full px-4 py-2 border rounded-md focus:outline-none text-center @error('neonatal_jaundice') border-accent @enderror"
+                           style="background-color: var(--color-input-bg); border-color: var(--color-border); color: var(--color-text-primary);">
                     @error('neonatal_jaundice')
-                        <p class="error-message">{{ $message }}</p>
+                        <p class="text-accent text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="bedridden_case">Bedridden Cases</label>
-                    <input type="number" id="bedridden_case" name="bedridden_case" min="0" value="{{ old('bedridden_case', $dailyData->bedridden_case) }}" class="@error('bedridden_case') border-accent @enderror">
+                    <label for="bedridden_case" class="block mb-2" style="color: var(--color-text-primary);">Bedridden Cases</label>
+                    <input type="number" id="bedridden_case" name="bedridden_case" min="0" value="{{ old('bedridden_case', $dailyData->bedridden_case) }}"
+                           class="w-full px-4 py-2 border rounded-md focus:outline-none text-center @error('bedridden_case') border-accent @enderror"
+                           style="background-color: var(--color-input-bg); border-color: var(--color-border); color: var(--color-text-primary);">
                     @error('bedridden_case')
-                        <p class="error-message">{{ $message }}</p>
+                        <p class="text-accent text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div class="form-group">
-                    <label for="incident_report">Incident Reports</label>
-                    <input type="number" id="incident_report" name="incident_report" min="0" value="{{ old('incident_report', $dailyData->incident_report) }}" class="@error('incident_report') border-accent @enderror">
+                    <label for="incident_report" class="block mb-2" style="color: var(--color-text-primary);">Incident Reports</label>
+                    <input type="number" id="incident_report" name="incident_report" min="0" value="{{ old('incident_report', $dailyData->incident_report) }}"
+                           class="w-full px-4 py-2 border rounded-md focus:outline-none text-center @error('incident_report') border-accent @enderror"
+                           style="background-color: var(--color-input-bg); border-color: var(--color-border); color: var(--color-text-primary);">
                     @error('incident_report')
-                        <p class="error-message">{{ $message }}</p>
+                        <p class="text-accent text-sm mt-1">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
         </div>
 
         <div class="form-group mb-6">
-            <label for="remarks">Remarks (Optional)</label>
-            <textarea id="remarks" name="remarks" rows="4" class="@error('remarks') border-accent @enderror">{{ old('remarks', $dailyData->remarks) }}</textarea>
+            <label for="remarks" class="block mb-2" style="color: var(--color-text-primary);">Remarks (Optional)</label>
+            <textarea id="remarks" name="remarks" rows="4"
+                      class="w-full px-4 py-2 border rounded-md focus:outline-none @error('remarks') border-accent @enderror"
+                      style="background-color: var(--color-input-bg); border-color: var(--color-border); color: var(--color-text-primary);">{{ old('remarks', $dailyData->remarks) }}</textarea>
             @error('remarks')
-                <p class="error-message">{{ $message }}</p>
+                <p class="text-accent text-sm mt-1">{{ $message }}</p>
             @enderror
         </div>
 

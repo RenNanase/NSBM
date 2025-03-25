@@ -3,26 +3,26 @@
 @section('content')
 <div class="px-4 py-5 sm:px-6">
     <div class="flex justify-between items-center mb-6">
-        <h3 class="text-xl font-semibold text-gray-800">Add New Infectious Disease Record</h3>
+        <h3 class="text-xl font-semibold" style="color: var(--color-text-primary);">Add New Infectious Disease Record</h3>
         <div>
-            <a href="{{ route('infectious-diseases.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <a href="{{ route('infectious-diseases.index') }}" class="inline-flex items-center px-4 py-2 border rounded-md text-sm font-medium" style="color: var(--color-text-primary); border-color: var(--color-border); background-color: var(--color-bg-alt);">
                 <i class="fas fa-arrow-left mr-2"></i> Back to List
             </a>
         </div>
     </div>
 
-    <div class="bg-white shadow rounded-lg p-6 mb-6">
+    <div class="dashboard-card p-6 mb-6">
         <form action="{{ route('infectious-diseases.store') }}" method="POST">
             @csrf
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
-                    <label for="disease" class="block text-sm font-medium text-gray-700 mb-1">Disease Type</label>
+                    <label for="disease" class="block text-sm font-medium mb-1" style="color: var(--color-text-secondary);">Disease Type</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <i class="fas fa-virus text-gray-400"></i>
+                            <i class="fas fa-virus" style="color: var(--color-text-light);"></i>
                         </div>
-                        <select id="disease" name="disease" class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <select id="disease" name="disease" class="pl-10 block w-full rounded-md focus:outline-none" style="background-color: var(--color-input-bg); border: 1px solid var(--color-border); color: var(--color-text-primary);">
                             <option value="">Select Disease</option>
                             @foreach(\App\Models\InfectiousDisease::diseaseTypes() as $disease)
                                 <option value="{{ $disease }}" {{ old('disease') == $disease ? 'selected' : '' }}>{{ $disease }}</option>
@@ -30,17 +30,17 @@
                         </select>
                     </div>
                     @error('disease')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm" style="color: var(--color-accent);">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="patient_type" class="block text-sm font-medium text-gray-700 mb-1">Patient Type</label>
+                    <label for="patient_type" class="block text-sm font-medium mb-1" style="color: var(--color-text-secondary);">Patient Type</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <i class="fas fa-user-injured text-gray-400"></i>
+                            <i class="fas fa-user-injured" style="color: var(--color-text-light);"></i>
                         </div>
-                        <select id="patient_type" name="patient_type" class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <select id="patient_type" name="patient_type" class="pl-10 block w-full rounded-md focus:outline-none" style="background-color: var(--color-input-bg); border: 1px solid var(--color-border); color: var(--color-text-primary);">
                             <option value="">Select Patient Type</option>
                             @foreach(\App\Models\InfectiousDisease::patientTypes() as $type => $label)
                                 <option value="{{ $type }}" {{ old('patient_type') == $type ? 'selected' : '' }}>{{ $label }}</option>
@@ -48,17 +48,17 @@
                         </select>
                     </div>
                     @error('patient_type')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm" style="color: var(--color-accent);">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="ward_id" class="block text-sm font-medium text-gray-700 mb-1">Ward</label>
+                    <label for="ward_id" class="block text-sm font-medium mb-1" style="color: var(--color-text-secondary);">Ward</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <i class="fas fa-hospital-alt text-gray-400"></i>
+                            <i class="fas fa-hospital-alt" style="color: var(--color-text-light);"></i>
                         </div>
-                        <select id="ward_id" name="ward_id" class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <select id="ward_id" name="ward_id" class="pl-10 block w-full rounded-md focus:outline-none" style="background-color: var(--color-input-bg); border: 1px solid var(--color-border); color: var(--color-text-primary);">
                             <option value="">Select Ward</option>
                             @foreach($wards as $ward)
                                 <option value="{{ $ward->id }}" {{ old('ward_id') == $ward->id ? 'selected' : '' }}>{{ $ward->name }}</option>
@@ -66,39 +66,39 @@
                         </select>
                     </div>
                     @error('ward_id')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm" style="color: var(--color-accent);">{{ $message }}</p>
                     @enderror
                 </div>
 
                 <div>
-                    <label for="total" class="block text-sm font-medium text-gray-700 mb-1">Total Cases</label>
+                    <label for="total" class="block text-sm font-medium mb-1" style="color: var(--color-text-secondary);">Total Cases</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <i class="fas fa-hashtag text-gray-400"></i>
+                            <i class="fas fa-hashtag" style="color: var(--color-text-light);"></i>
                         </div>
-                        <input type="number" name="total" id="total" min="0" value="{{ old('total', 0) }}" class="pl-10 block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm">
+                        <input type="number" name="total" id="total" min="0" value="{{ old('total', 0) }}" class="pl-10 block w-full rounded-md focus:outline-none" style="background-color: var(--color-input-bg); border: 1px solid var(--color-border); color: var(--color-text-primary);">
                     </div>
                     @error('total')
-                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                        <p class="mt-1 text-sm" style="color: var(--color-accent);">{{ $message }}</p>
                     @enderror
                 </div>
             </div>
 
             <div class="mb-6">
-                <label for="notes" class="block text-sm font-medium text-gray-700 mb-1">Notes</label>
+                <label for="notes" class="block text-sm font-medium mb-1" style="color: var(--color-text-secondary);">Notes</label>
                 <div class="relative">
-                    <textarea id="notes" name="notes" rows="3" class="block w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm" placeholder="Any additional information about this case...">{{ old('notes') }}</textarea>
+                    <textarea id="notes" name="notes" rows="3" class="block w-full rounded-md focus:outline-none" style="background-color: var(--color-input-bg); border: 1px solid var(--color-border); color: var(--color-text-primary);" placeholder="Any additional information about this case...">{{ old('notes') }}</textarea>
                 </div>
                 @error('notes')
-                    <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    <p class="mt-1 text-sm" style="color: var(--color-accent);">{{ $message }}</p>
                 @enderror
             </div>
 
             <div class="flex justify-end space-x-3">
-                <a href="{{ route('infectious-diseases.index') }}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <a href="{{ route('infectious-diseases.index') }}" class="inline-flex items-center px-4 py-2 border rounded-md shadow-sm text-sm font-medium" style="color: var(--color-text-primary); border-color: var(--color-border); background-color: var(--color-bg-alt);">
                     Cancel
                 </a>
-                <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <button type="submit" class="btn btn-primary inline-flex items-center px-4 py-2 rounded-md shadow-sm text-sm font-medium text-white">
                     <i class="fas fa-save mr-2"></i> Save Record
                 </button>
             </div>

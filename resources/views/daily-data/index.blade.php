@@ -82,37 +82,37 @@
         <div class="overflow-x-auto">
             <table class="w-full daily-data-table">
                 <thead>
-                    <tr>
-                        <th>Date</th>
+                    <tr style="background-color: var(--color-secondary-dark); color: white;">
+                        <th class="py-3 px-4 text-center">Date</th>
                         @if(Auth::user()->isAdmin() && (!isset($ward) || !$ward))
-                        <th>Ward</th>
+                        <th class="py-3 px-4 text-center">Ward</th>
                         @endif
-                        <th>Deaths</th>
-                        <th>Neonatal Jaundice</th>
-                        <th>Bedridden Cases</th>
-                        <th>Incident Reports</th>
-                        <th>Recorded By</th>
-                        <th>Actions</th>
+                        <th class="py-3 px-4 text-center">Deaths</th>
+                        <th class="py-3 px-4 text-center">Neonatal Jaundice</th>
+                        <th class="py-3 px-4 text-center">Bedridden Cases</th>
+                        <th class="py-3 px-4 text-center">Incident Reports</th>
+                        <th class="py-3 px-4 text-center">Recorded By</th>
+                        <th class="py-3 px-4 text-center">Actions</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y" style="border-color: var(--color-border);">
                     @foreach($dailyData as $entry)
-                        <tr>
-                            <td>{{ $entry->date->format('d M Y') }}</td>
+                        <tr class="hover:bg-opacity-20 transition duration-150" style="background-color: var(--color-table-stripe); --tw-bg-opacity: 0.5;">
+                            <td class="py-3 px-4 text-center" style="color: var(--color-text-primary);">{{ $entry->date->format('d M Y') }}</td>
                             @if(Auth::user()->isAdmin() && (!isset($ward) || !$ward))
-                            <td>{{ $entry->ward->name ?? 'Unknown' }}</td>
+                            <td class="py-3 px-4 text-center" style="color: var(--color-text-primary);">{{ $entry->ward->name ?? 'Unknown' }}</td>
                             @endif
-                            <td>{{ $entry->death }}</td>
-                            <td>{{ $entry->neonatal_jaundice }}</td>
-                            <td>{{ $entry->bedridden_case }}</td>
-                            <td>{{ $entry->incident_report }}</td>
-                            <td>{{ $entry->user->username }}</td>
-                            <td>
-                                <div class="flex space-x-2">
-                                    <a href="{{ route('daily-data.show', $entry->id) }}" class="btn-icon text-secondary" title="View">
+                            <td class="py-3 px-4 text-center font-medium" style="color: var(--color-text-primary);">{{ $entry->death }}</td>
+                            <td class="py-3 px-4 text-center font-medium" style="color: var(--color-text-primary);">{{ $entry->neonatal_jaundice }}</td>
+                            <td class="py-3 px-4 text-center font-medium" style="color: var(--color-text-primary);">{{ $entry->bedridden_case }}</td>
+                            <td class="py-3 px-4 text-center font-medium" style="color: var(--color-text-primary);">{{ $entry->incident_report }}</td>
+                            <td class="py-3 px-4 text-center" style="color: var(--color-text-primary);">{{ $entry->user->username }}</td>
+                            <td class="py-3 px-4 text-center">
+                                <div class="flex justify-center space-x-3">
+                                    <a href="{{ route('daily-data.show', $entry->id) }}" class="btn-icon" style="color: var(--color-secondary);" title="View">
                                         <i class="fas fa-eye"></i>
                                     </a>
-                                    <a href="{{ route('daily-data.edit', $entry->id) }}" class="btn-icon text-primary" title="Edit">
+                                    <a href="{{ route('daily-data.edit', $entry->id) }}" class="btn-icon" style="color: var(--color-accent-dark);" title="Edit">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     @if(Auth::user()->isAdmin())
@@ -120,7 +120,7 @@
                                             onsubmit="return confirm('Are you sure you want to delete this entry?');">
                                             @csrf
                                             @method('DELETE')
-                                            <button type="submit" class="btn-icon text-accent" title="Delete">
+                                            <button type="submit" class="btn-icon" style="color: var(--color-accent);" title="Delete">
                                                 <i class="fas fa-trash-alt"></i>
                                             </button>
                                         </form>
@@ -137,4 +137,16 @@
         </div>
     @endif
 </div>
+
+<style>
+    .daily-data-table th {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: white;
+    }
+
+    .daily-data-table td {
+        font-size: 0.95rem;
+    }
+</style>
 @endsection

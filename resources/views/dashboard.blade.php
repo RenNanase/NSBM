@@ -226,7 +226,7 @@
             </div>
             @if($censusEntry->created_at->format('Y-m-d') !== $today)
             <div class="mt-3 p-2 rounded-md" style="background-color: var(--color-secondary-light); border: 1px solid var(--color-border);">
-                <p class="text-xs text-center" style="color: var(--color-secondary-dark);">
+                <p class="text-xs text-center" style="color: var(--color-primary-dark);">
                     <i class="fas fa-info-circle mr-1"></i> This is the most recent census data available. No data has been recorded for today.
                 </p>
             </div>

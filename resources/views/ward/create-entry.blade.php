@@ -186,7 +186,7 @@
 
         <!-- Section 5: Shift-Specific Totals -->
         <div class="mb-6 p-4 rounded-lg border" style="background-color: var(--color-secondary-light); border-color: var(--color-secondary-light);">
-            <h3 class="text-lg font-medium mb-4" style="color: var(--color-secondary);">Shift-Specific Patient Totals</h3>
+            <h3 class="text-lg font-medium mb-4" style="color: var(--color-primary-dark);">Shift-Specific Patient Totals</h3>
             <p class="text-sm mb-4" style="color: var(--color-text-secondary);">These values are automatically calculated based on your inputs above.</p>
 
             <!-- AM Shift specific fields -->
